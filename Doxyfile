@@ -1,0 +1,8 @@
+PROJECT_NAME = "FMath"
+PROJECT_BRIEF = "Personal math library for 3D graphics"
+OUTPUT_LANGUAGE = "English"
+
+FULL_PATH_NAMES = NO
+TAB_SIZE = 4
+RECURSIVE = YES
+OUTPUT_DIRECTORY = doxygen_output

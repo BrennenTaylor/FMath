@@ -164,7 +164,7 @@ namespace Farlor
 
     float Vector4::Magnitude() const
     {
-        return sqrt(x*x + y*y + z*z + w*w);
+        return std::sqrt(x * x + y * y + z * z + w * w);
     }
 
     float Vector4::SqrMagnitude() const

@@ -61,7 +61,7 @@ namespace Farlor
          * @param rhs
          * @return Matrix2x2&
          */
-        Matrix2x2& Matrix2x2::operator+=(const Matrix2x2 &rhs);
+        Matrix2x2& operator+=(const Matrix2x2 &rhs);
         /**
          * @brief Overloads + operator to add element wise
          *
@@ -75,7 +75,7 @@ namespace Farlor
          * @param rhs
          * @return Matrix2x2&
          */
-        Matrix2x2& Matrix2x2::operator-=(const Matrix2x2 &rhs);
+        Matrix2x2& operator-=(const Matrix2x2 &rhs);
         /**
          * @brief Overload - operator to subtract element wise
          *
@@ -89,7 +89,7 @@ namespace Farlor
          * @param rhs
          * @return Matrix2x2&
          */
-        Matrix2x2& Matrix2x2::operator*=(const Matrix2x2 &rhs);
+        Matrix2x2& operator*=(const Matrix2x2 &rhs);
         /**
          * @brief Overload * operator to perform matrix multiplcation
          *

@@ -63,18 +63,18 @@ namespace Farlor
             float r3c1, float r3c2, float r3c3, float r3c4,
             float r4c1, float r4c2, float r4c3, float r4c4);
 
-        Matrix4x4& Matrix4x4::operator+=(const Matrix4x4 &rhs);
+        Matrix4x4& operator+=(const Matrix4x4 &rhs);
         Matrix4x4 operator+(const Matrix4x4 &vec) const;
-        Matrix4x4& Matrix4x4::operator-=(const Matrix4x4 &rhs);
+        Matrix4x4& operator-=(const Matrix4x4 &rhs);
         Matrix4x4 operator-(const Matrix4x4 &vec) const;
-        Matrix4x4& Matrix4x4::operator*=(const Matrix4x4 &rhs);
+        Matrix4x4& operator*=(const Matrix4x4 &rhs);
         Matrix4x4 operator*(const Matrix4x4 &vec) const;
 
         // Divide
-        // Matrix4x4& Matrix4x4::operator/=( Matrix4x4 &rhs);
+        // Matrix4x4& operator/=( Matrix4x4 &rhs);
         //  Matrix4x4 operator/( Matrix4x4 &vec);
         // Use % as dot product
-        // Matrix4x4& Matrix4x4::operator%=( Matrix4x4 &rhs) = delete;
+        // Matrix4x4& operator%=( Matrix4x4 &rhs) = delete;
         // float operator%( Matrix4x4 &vec);
         // Equality
         bool operator==(const Matrix4x4 &other) const;

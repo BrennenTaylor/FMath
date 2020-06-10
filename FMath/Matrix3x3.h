@@ -54,13 +54,13 @@ namespace Farlor
 
         // Matrix3x3 & Matrix3x3
         // Add
-        Matrix3x3& Matrix3x3::operator+=(const Matrix3x3 &rhs);
+        Matrix3x3& operator+=(const Matrix3x3 &rhs);
         Matrix3x3 operator+( const Matrix3x3 &vec) const;
         // Subtract
-        Matrix3x3& Matrix3x3::operator-=(const Matrix3x3 &rhs);
+        Matrix3x3& operator-=(const Matrix3x3 &rhs);
          Matrix3x3 operator-( const Matrix3x3 &vec) const;
         // Multiply
-        Matrix3x3& Matrix3x3::operator*=(const Matrix3x3 &rhs);
+        Matrix3x3& operator*=(const Matrix3x3 &rhs);
         Matrix3x3 operator*(const Matrix3x3 &vec) const;
 
         // Equality

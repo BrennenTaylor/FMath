@@ -62,7 +62,7 @@ namespace Farlor
          * @param rhs
          * @return Vector2&
          */
-        Vector2& Vector2::operator+=(const Vector2 &rhs);
+        Vector2& operator+=(const Vector2 &rhs);
         /**
          * @brief overload + operator for Vector2
          *
@@ -76,7 +76,7 @@ namespace Farlor
          * @param rhs
          * @return Vector2&
          */
-        Vector2& Vector2::operator-=(const Vector2 &rhs);
+        Vector2& operator-=(const Vector2 &rhs);
         /**
          * @brief overload - operator for Vector2
          *
@@ -90,7 +90,7 @@ namespace Farlor
          * @param rhs
          * @return Vector2&
          */
-        Vector2& Vector2::operator*=(const Vector2 &rhs);
+        Vector2& operator*=(const Vector2 &rhs);
         /**
          * @brief overload * operator, element wise multiplaction
          *
@@ -104,7 +104,7 @@ namespace Farlor
          * @param rhs
          * @return Vector2&
          */
-        Vector2& Vector2::operator/=(const Vector2 &rhs);
+        Vector2& operator/=(const Vector2 &rhs);
         /**
          * @brief overload / operator, element wise
          *
@@ -119,7 +119,7 @@ namespace Farlor
          * @param rhs
          * @return Vector2&
          */
-        Vector2& Vector2::operator%=(const Vector2 &rhs) = delete;
+        Vector2& operator%=(const Vector2 &rhs) = delete;
         /**
          * @brief overload % operator, overloaded for dot product
          *

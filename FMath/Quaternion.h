@@ -33,19 +33,19 @@ namespace Farlor
 
         // Quaternion & Quaternion
         // Add
-        Quaternion& Quaternion::operator+=(Quaternion &rhs);
+        Quaternion& operator+=(Quaternion &rhs);
         Quaternion operator+(Quaternion &vec);
         // Subtract
-        Quaternion& Quaternion::operator-=(Quaternion &rhs);
+        Quaternion& operator-=(Quaternion &rhs);
         Quaternion operator-(Quaternion &vec);
         // Multiply
-        Quaternion& Quaternion::operator*=(Quaternion &rhs);
+        Quaternion& operator*=(Quaternion &rhs);
         Quaternion operator*(Quaternion &vec);
         // Divide
-        Quaternion& Quaternion::operator/=(Quaternion &rhs);
+        Quaternion& operator/=(Quaternion &rhs);
         Quaternion operator/(Quaternion &vec);
         // Use % as dot product
-        Quaternion& Quaternion::operator%=(Quaternion &rhs) = delete;
+        Quaternion& operator%=(Quaternion &rhs) = delete;
         float operator%(Quaternion &vec);
         // Equality
         bool operator==(Quaternion &other);

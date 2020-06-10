@@ -315,14 +315,14 @@ namespace Farlor
 
     Matrix4x4 Matrix4x4::RotationYawPitchRollMatrix(const Vector3& yawPitchRoll)
     {
-        float yawCos = cos(yawPitchRoll.x);
-        float yawSin = sin(yawPitchRoll.x);
-        
-        float pitchCos = cos(yawPitchRoll.y);
-        float pitchSin = sin(yawPitchRoll.y);
-        
-        float rollCos = cos(yawPitchRoll.z);
-        float rollSin = sin(yawPitchRoll.z);
+        float yawCos = std::cos(yawPitchRoll.x);
+        float yawSin = std::sin(yawPitchRoll.x);
+
+        float pitchCos = std::cos(yawPitchRoll.y);
+        float pitchSin = std::sin(yawPitchRoll.y);
+
+        float rollCos = std::cos(yawPitchRoll.z);
+        float rollSin = std::sin(yawPitchRoll.z);
 
         Matrix4x4 yawMatrix(
             Vector4(yawCos, -yawSin, 0.0f, 0.0f),

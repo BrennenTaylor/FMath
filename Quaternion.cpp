@@ -174,8 +174,8 @@ namespace Farlor
     Quaternion Quaternion::RotationAroundAxis(float angle, Vector3 axis)
     {
         Quaternion rotation;
-        rotation.s = cos(angle / 2.0f);
-        rotation.u = sin(angle / 2.0f) * axis.Normalized();
+        rotation.s = std::cos(angle / 2.0f);
+        rotation.u = std::sin(angle / 2.0f) * axis.Normalized();
         return rotation;
     }
 }

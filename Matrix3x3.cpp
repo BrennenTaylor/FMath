@@ -226,7 +226,7 @@ namespace Farlor
 
         if (t >= 0.0f)
         {
-            r = sqrt(t+1);
+            r = std::sqrt(t+1);
             result.s = r/2.0f;
             result.u.x = (mat.m_rows[2][1] - mat.m_rows[1][2])/(2.0f*r);
             result.u.y = (mat.m_rows[0][2] - mat.m_rows[2][0])/(2.0f*r);
@@ -234,7 +234,7 @@ namespace Farlor
         }
         else if (mat.m_rows[0][0] > mat.m_rows[1][1] && mat.m_rows[0][0] > mat.m_rows[2][2])
         {
-            r = sqrt(mat.m_rows[0][0] - (mat.m_rows[1][1] + mat.m_rows[2][2]) + 1);
+            r = std::sqrt(mat.m_rows[0][0] - (mat.m_rows[1][1] + mat.m_rows[2][2]) + 1);
             result.u.x = r/2.0f;
             result.u.y = (mat.m_rows[0][1] - mat.m_rows[1][0])/(2.0f*r);
             result.u.z = (mat.m_rows[2][0] - mat.m_rows[0][2])/(2.0f*r);
@@ -242,7 +242,7 @@ namespace Farlor
         }
         else if (mat.m_rows[1][1] > mat.m_rows[0][0] && mat.m_rows[1][1] > mat.m_rows[2][2])
         {
-            r = sqrt(mat.m_rows[1][1] - (mat.m_rows[2][2] + mat.m_rows[0][0]) + 1);
+            r = std::sqrt(mat.m_rows[1][1] - (mat.m_rows[2][2] + mat.m_rows[0][0]) + 1);
             result.u.y = r/2.0f;
             result.u.z = (mat.m_rows[1][2] - mat.m_rows[2][1])/(2.0f*r);
             result.u.x = (mat.m_rows[0][1] - mat.m_rows[1][0])/(2.0f*r);
@@ -250,7 +250,7 @@ namespace Farlor
         }
         else
         {
-            r = sqrt(mat.m_rows[2][2] - (mat.m_rows[0][0] + mat.m_rows[1][1]) + 1);
+            r = std::sqrt(mat.m_rows[2][2] - (mat.m_rows[0][0] + mat.m_rows[1][1]) + 1);
             result.u.z = r/2.0f;
             result.u.x = (mat.m_rows[2][0] - mat.m_rows[0][2])/(2.0f*r);
             result.u.y = (mat.m_rows[1][2] - mat.m_rows[2][1])/(2.0f*r);

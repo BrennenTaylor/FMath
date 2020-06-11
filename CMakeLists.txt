@@ -39,10 +39,11 @@ target_include_directories(FMath
     PUBLIC
     $<INSTALL_INTERFACE:include>
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
+    PUBLIC ${GLM_INCLUDE_DIRS}
 )
 
 target_link_libraries(FMath
-    PRIVATE glm)
+	PUBLIC glm)
 
 # Set targets to have d at end for debug build
 set_target_properties(FMath PROPERTIES DEBUG_POSTFIX "d")

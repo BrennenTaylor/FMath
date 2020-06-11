@@ -2,7 +2,7 @@
 
 #include <glm/mat4x4.hpp>
 #include <glm/gtc/matrix_transform.hpp>
-#include <glm/ext/matrix_transform.hpp>
+//#include <glm/ext/matrix_transform.hpp>
 
 #include <cmath>
 
@@ -32,17 +32,17 @@ namespace Farlor
 
     Matrix4x4::Matrix4x4(const Quaternion& q, const Vector3& pos)
     {
-        m_r1c1 = 1 - 2 * q.u.y*q.u.y - 2 * q.u.z*q.u.z;
-        m_r1c2 = 2 * q.u.x*q.u.y - 2 * q.s*q.u.z;
-        m_r1c3 = 2 * q.u.x*q.u.z + 2 * q.s*q.u.y;
+        m_r1c1 = 1 - 2 * q.m_data[2]*q.m_data[2] - 2 * q.m_data[3]*q.m_data[3];
+        m_r1c2 = 2 * q.m_data[1]*q.m_data[2] - 2 * q.m_data[0]*q.m_data[3];
+        m_r1c3 = 2 * q.m_data[1]*q.m_data[3] + 2 * q.m_data[0]*q.m_data[2];
 
-        m_r2c1 = 2 * q.u.x*q.u.y + 2 * q.s*q.u.z;
-        m_r2c2 = 1 - 2 * q.u.x*q.u.x - 2 * q.u.z*q.u.z;
-        m_r2c3 = 2 * q.u.y*q.u.z - 2 * q.s*q.u.x;
+        m_r2c1 = 2 * q.m_data[1]*q.m_data[2] + 2 * q.m_data[0]*q.m_data[3];
+        m_r2c2 = 1 - 2 * q.m_data[1]*q.m_data[1] - 2 * q.m_data[3]*q.m_data[3];
+        m_r2c3 = 2 * q.m_data[2]*q.m_data[3] - 2 * q.m_data[0]*q.m_data[1];
 
-        m_r3c1 = 2 * q.u.x*q.u.z - 2 * q.s*q.u.y;
-        m_r3c2 = 2 * q.u.y*q.u.z + 2 * q.s*q.u.x;
-        m_r3c3 = 1 - 2 * q.u.x*q.u.x - 2 * q.u.y*q.u.y;
+        m_r3c1 = 2 * q.m_data[1]*q.m_data[3] - 2 * q.m_data[0]*q.m_data[2];
+        m_r3c2 = 2 * q.m_data[2]*q.m_data[3] + 2 * q.m_data[0]*q.m_data[1];
+        m_r3c3 = 1 - 2 * q.m_data[1]*q.m_data[1] - 2 * q.m_data[2]*q.m_data[2];
         m_r1c4 = pos.x;
         m_r2c4 = pos.y;
         m_r3c4 = pos.z;

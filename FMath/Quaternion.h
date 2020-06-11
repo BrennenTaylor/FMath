@@ -20,12 +20,6 @@ namespace Farlor
         union
         {
             float m_data[4];
-            struct
-            {
-
-                float s;
-                Vector3 u;
-            };
         };
 
         Quaternion();

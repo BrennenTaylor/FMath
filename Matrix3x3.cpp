@@ -22,17 +22,17 @@ namespace Farlor
 
     Matrix3x3::Matrix3x3(Quaternion q)
     {
-        m_r1c1 = 1 - 2*q.u.y*q.u.y - 2*q.u.z*q.u.z;
-        m_r1c2 = 2*q.u.x*q.u.y - 2*q.s*q.u.z;
-        m_r1c3 = 2*q.u.x*q.u.z + 2*q.s*q.u.y;
+        m_r1c1 = 1 - 2*q.m_data[2]*q.m_data[2] - 2*q.m_data[3]*q.m_data[3];
+        m_r1c2 = 2*q.m_data[1]*q.m_data[2] - 2*q.m_data[0] *q.m_data[3];
+        m_r1c3 = 2*q.m_data[1]*q.m_data[3] + 2*q.m_data[0] *q.m_data[2];
 
-        m_r2c1 = 2*q.u.x*q.u.y + 2*q.s*q.u.z;
-        m_r2c2 = 1 - 2*q.u.x*q.u.x - 2*q.u.z*q.u.z;
-        m_r2c3 = 2*q.u.y*q.u.z - 2*q.s*q.u.x;
+        m_r2c1 = 2*q.m_data[1]*q.m_data[2] + 2*q.m_data[0] *q.m_data[3];
+        m_r2c2 = 1 - 2*q.m_data[1]*q.m_data[1] - 2*q.m_data[3]*q.m_data[3];
+        m_r2c3 = 2*q.m_data[2]*q.m_data[3] - 2*q.m_data[0] *q.m_data[1];
 
-        m_r3c1 = 2*q.u.x*q.u.z - 2*q.s*q.u.y;
-        m_r3c2 = 2*q.u.y*q.u.z + 2*q.s*q.u.x;
-        m_r3c3 = 1 - 2*q.u.x*q.u.x - 2*q.u.y*q.u.y;
+        m_r3c1 = 2*q.m_data[1]*q.m_data[3] - 2*q.m_data[0] *q.m_data[2];
+        m_r3c2 = 2*q.m_data[2]*q.m_data[3] + 2*q.m_data[0] *q.m_data[1];
+        m_r3c3 = 1 - 2*q.m_data[1]*q.m_data[1] - 2*q.m_data[2]*q.m_data[2];
     }
 
     // Matrix3x3 & Matrix3x3
@@ -220,34 +220,34 @@ namespace Farlor
         if (t >= 0.0f)
         {
             r = std::sqrt(t+1);
-            result.s = r/2.0f;
-            result.u.x = (mat.m_rows[2][1] - mat.m_rows[1][2])/(2.0f*r);
-            result.u.y = (mat.m_rows[0][2] - mat.m_rows[2][0])/(2.0f*r);
-            result.u.z = (mat.m_rows[1][0] - mat.m_rows[0][1])/(2.0f*r);
+            result.m_data[0]  = r/2.0f;
+            result.m_data[1] = (mat.m_rows[2][1] - mat.m_rows[1][2])/(2.0f*r);
+            result.m_data[2] = (mat.m_rows[0][2] - mat.m_rows[2][0])/(2.0f*r);
+            result.m_data[3] = (mat.m_rows[1][0] - mat.m_rows[0][1])/(2.0f*r);
         }
         else if (mat.m_rows[0][0] > mat.m_rows[1][1] && mat.m_rows[0][0] > mat.m_rows[2][2])
         {
             r = std::sqrt(mat.m_rows[0][0] - (mat.m_rows[1][1] + mat.m_rows[2][2]) + 1);
-            result.u.x = r/2.0f;
-            result.u.y = (mat.m_rows[0][1] - mat.m_rows[1][0])/(2.0f*r);
-            result.u.z = (mat.m_rows[2][0] - mat.m_rows[0][2])/(2.0f*r);
-            result.s = (mat.m_rows[2][1] - mat.m_rows[1][2])/(2.0f*r);
+            result.m_data[1] = r/2.0f;
+            result.m_data[2] = (mat.m_rows[0][1] - mat.m_rows[1][0])/(2.0f*r);
+            result.m_data[3] = (mat.m_rows[2][0] - mat.m_rows[0][2])/(2.0f*r);
+            result.m_data[0]  = (mat.m_rows[2][1] - mat.m_rows[1][2])/(2.0f*r);
         }
         else if (mat.m_rows[1][1] > mat.m_rows[0][0] && mat.m_rows[1][1] > mat.m_rows[2][2])
         {
             r = std::sqrt(mat.m_rows[1][1] - (mat.m_rows[2][2] + mat.m_rows[0][0]) + 1);
-            result.u.y = r/2.0f;
-            result.u.z = (mat.m_rows[1][2] - mat.m_rows[2][1])/(2.0f*r);
-            result.u.x = (mat.m_rows[0][1] - mat.m_rows[1][0])/(2.0f*r);
-            result.s = (mat.m_rows[0][2] - mat.m_rows[2][0])/(2.0f*r);
+            result.m_data[2] = r/2.0f;
+            result.m_data[3] = (mat.m_rows[1][2] - mat.m_rows[2][1])/(2.0f*r);
+            result.m_data[1] = (mat.m_rows[0][1] - mat.m_rows[1][0])/(2.0f*r);
+            result.m_data[0]  = (mat.m_rows[0][2] - mat.m_rows[2][0])/(2.0f*r);
         }
         else
         {
             r = std::sqrt(mat.m_rows[2][2] - (mat.m_rows[0][0] + mat.m_rows[1][1]) + 1);
-            result.u.z = r/2.0f;
-            result.u.x = (mat.m_rows[2][0] - mat.m_rows[0][2])/(2.0f*r);
-            result.u.y = (mat.m_rows[1][2] - mat.m_rows[2][1])/(2.0f*r);
-            result.s = (mat.m_rows[1][0] - mat.m_rows[0][1])/(2.0f*r);
+            result.m_data[3] = r/2.0f;
+            result.m_data[1] = (mat.m_rows[2][0] - mat.m_rows[0][2])/(2.0f*r);
+            result.m_data[2] = (mat.m_rows[1][2] - mat.m_rows[2][1])/(2.0f*r);
+            result.m_data[0]  = (mat.m_rows[1][0] - mat.m_rows[0][1])/(2.0f*r);
         }
 
         return result;

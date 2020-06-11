@@ -8,20 +8,26 @@ namespace Farlor
 {
     Quaternion::Quaternion()
     {
-        s = 1.0f;
-        u = Vector3(0.0f, 0.0f, 0.0f);
+        m_data[0] = 1.0f;
+        m_data[1] = 0.0f;
+        m_data[2] = 0.0f;
+        m_data[3] = 0.0f;
     }
 
     Quaternion::Quaternion(float newS, Vector3 newU)
     {
-        s = newS;
-        u = newU;
+        m_data[0] = newS;
+        m_data[1] = newU.x;
+        m_data[2] = newU.y;
+        m_data[3] = newU.z;
     }
 
     Quaternion& Quaternion::operator+=(Quaternion &rhs)
     {
-        s += rhs.s;
-        u += rhs.u;
+        m_data[0] += rhs.m_data[0];
+        m_data[1] += rhs.m_data[1];
+        m_data[2] += rhs.m_data[2];
+        m_data[3] += rhs.m_data[3];
         return *this;
     }
     Quaternion Quaternion::operator+(Quaternion &other)
@@ -31,8 +37,10 @@ namespace Farlor
     // Subtract
     Quaternion& Quaternion::operator-=(Quaternion &rhs)
     {
-        s -= rhs.s;
-        u -= rhs.u;
+        m_data[0] -= rhs.m_data[0];
+        m_data[1] -= rhs.m_data[1];
+        m_data[2] -= rhs.m_data[2];
+        m_data[3] -= rhs.m_data[3];
         return *this;
     }
     Quaternion Quaternion::operator-(Quaternion &other)
@@ -42,10 +50,15 @@ namespace Farlor
     // Multiply
     Quaternion& Quaternion::operator*=(Quaternion &rhs)
     {
-        float newS = (s * rhs.s) - (u.Dot(rhs.u));
-        Vector3 newU = s*rhs.u + rhs.s * u + u.Cross(rhs.u);
-        s = newS;
-        u = newU;
+        Farlor::Vector3 lhsU(m_data[1], m_data[2], m_data[3]);
+        Farlor::Vector3 rhsU(rhs.m_data[1], rhs.m_data[2], rhs.m_data[3]);
+
+        float newS = (m_data[0] * rhs.m_data[0]) - (lhsU.Dot(rhsU));
+        Vector3 newU = m_data[0]*rhsU + rhs.m_data[0] * lhsU + lhsU.Cross(rhsU);
+        m_data[0] = newS;
+        m_data[1] = newU.x;
+        m_data[2] = newU.y;
+        m_data[3] = newU.z;
         return *this;
     }
     Quaternion Quaternion::operator*(Quaternion &other)
@@ -56,7 +69,7 @@ namespace Farlor
     // Equality
     bool Quaternion::operator==(Quaternion &other)
     {
-        return (s == other.s && u == other.u);
+        return (m_data[0] == other.m_data[0] && m_data[1] == other.m_data[1] && m_data[2] == other.m_data[2]  && m_data[3] == other.m_data[3] );
     }
     bool Quaternion::operator!=(Quaternion &other)
     {
@@ -67,8 +80,10 @@ namespace Farlor
     // Multiply
     Quaternion& Quaternion::operator*=(float &rhs)
     {
-        s *= rhs;
-        u *= rhs;
+        m_data[0] *= rhs;
+        m_data[1] *= rhs;
+        m_data[2] *= rhs;
+        m_data[3] *= rhs;
         return *this;
     }
     Quaternion Quaternion::operator*(float &other)
@@ -78,8 +93,10 @@ namespace Farlor
     // Divide
     Quaternion& Quaternion::operator/=(float &rhs)
     {
-        s /= rhs;
-        u /= rhs;
+        m_data[0] /= rhs;
+        m_data[1] /= rhs;
+        m_data[2] /= rhs;
+        m_data[3] /= rhs;
         return *this;
     }
     Quaternion Quaternion::operator/(float &other)
@@ -90,25 +107,26 @@ namespace Farlor
     // Standalone
     Quaternion operator*(float lhs, Quaternion& rhs)
     {
-        return Quaternion{lhs * rhs.s, lhs * rhs.u};
+        Farlor::Vector3 rhsU(rhs.m_data[1], rhs.m_data[2], rhs.m_data[3]);
+        return Quaternion{lhs * rhs.m_data[0], lhs * rhsU};
     }
 
     // Out Streaming
     ostream& operator<<(ostream& os, Quaternion& quat)
     {
-        os << "s: " << quat.s << " u: <" << quat.u << ">";
+        os << "s: " << quat.m_data[0] << " u: <" << quat.m_data[1] << ", " << quat.m_data[2] << ", " << quat.m_data[3] << ">";
         return os;
     }
 
     // Local Math Operations
     float Quaternion::Magnitude()
     {
-        return std::sqrt(s*s + u.x*u.x + u.y*u.y + u.z*u.z);
+        return std::sqrt(m_data[0]*m_data[0] + m_data[1]*m_data[1] + m_data[2]*m_data[2] + m_data[3]*m_data[3]);
     }
 
     float Quaternion::SqrMagnitude()
     {
-        return s*s + u.x*u.x + u.y*u.y + u.z*u.z;
+        return m_data[0]*m_data[0] + m_data[1]*m_data[1] + m_data[2]*m_data[2] + m_data[3]*m_data[3];
     }
 
     Quaternion Quaternion::Normalized()
@@ -118,11 +136,12 @@ namespace Farlor
         if (mag == 0)
         {
             Quaternion result{*this};
-            result.s = 1.0f;
+            result.m_data[0] = 1.0f;
             return result;
         }
 
-        return Quaternion {s / mag, u / mag};
+        Farlor::Vector3 lhsU(m_data[1], m_data[2], m_data[3]);
+        return Quaternion {m_data[0] / mag, lhsU / mag};
     }
 
     void Quaternion::Normalize()
@@ -131,12 +150,14 @@ namespace Farlor
 
         if (mag == 0)
         {
-            s = 1.0f;
+            m_data[0] = 1.0f;
             return;
         }
 
-        s /= mag;
-        u /= mag;
+        m_data[0] /= mag;
+        m_data[1] /= mag;
+        m_data[2] /= mag;
+        m_data[3] /= mag;
     }
 
     void Quaternion::RotateByVector(Vector3& vec)
@@ -149,10 +170,10 @@ namespace Farlor
     {
         Quaternion q(0, vec * scale);
         q *= (*this);
-        s += q.s * 0.5f;
-        u.x += q.u.x * 0.5f;
-        u.y += q.u.y * 0.5f;
-        u.z += q.u.z * 0.5f;
+        m_data[0] += q.m_data[0] * 0.5f;
+        m_data[1] += q.m_data[1] * 0.5f;
+        m_data[2] += q.m_data[2] * 0.5f;
+        m_data[3] += q.m_data[3] * 0.5f;
     }
 
     // http://answers.unity3d.com/questions/645903/please-explain-quaternions.html
@@ -166,18 +187,22 @@ namespace Farlor
         float cp = cos(pitch * 0.5f);
         float sp = sin(pitch * 0.5f);
 
-        rotation.s = cy * cr * cp + sy * sr * sp;
-        rotation.u.x = cy * sr * cp - sy * cr * sp;
-        rotation.u.y = cy * cr * sp + sy * sr * cp;
-        rotation.u.z = sy * cr * cp - cy * sr * sp;
+        rotation.m_data[0] = cy * cr * cp + sy * sr * sp;
+        rotation.m_data[1] = cy * sr * cp - sy * cr * sp;
+        rotation.m_data[2] = cy * cr * sp + sy * sr * cp;
+        rotation.m_data[3] = sy * cr * cp - cy * sr * sp;
         return rotation;
     }
 
     Quaternion Quaternion::RotationAroundAxis(float angle, Vector3 axis)
     {
         Quaternion rotation;
-        rotation.s = std::cos(angle / 2.0f);
-        rotation.u = std::sin(angle / 2.0f) * axis.Normalized();
+        rotation.m_data[0] = std::cos(angle / 2.0f);
+        
+        Farlor::Vector3 tempU = std::sin(angle / 2.0f) * axis.Normalized(); 
+        rotation.m_data[1] = tempU.x;
+        rotation.m_data[2] = tempU.y;
+        rotation.m_data[3] = tempU.z;
         return rotation;
     }
 }

@@ -1,9 +1,6 @@
 #include "FMath/Matrix3x3.h"
 
-#include <DirectXMath.h>
-
-using namespace DirectX;
-using namespace std;
+#include <glm/mat3x3.hpp>
 
 namespace Farlor
 {
@@ -161,7 +158,7 @@ namespace Farlor
     }
 
     // Out Streaming
-    ostream& operator<<(ostream& os, Matrix3x3& mat)
+    std::ostream& operator<<(std::ostream& os, Matrix3x3& mat)
     {
         os << mat.m_rows[0] << mat.m_rows[1] << mat.m_rows[2];
         return os;
@@ -171,26 +168,22 @@ namespace Farlor
     {
         Matrix3x3 val(*this);
 
-        XMFLOAT3X3 tempRotate;
+        glm::mat3 tempRotate;
         for (int i = 0; i < 3; i++)
         {
             for (int j = 0; j < 3; j++)
             {
-                tempRotate.m[i][j] = val.m_rows[i][j];
+                tempRotate[i][j] = val.m_rows[i][j];
             }
         }
 
-        XMMATRIX matrixToInverse = XMLoadFloat3x3(&tempRotate);
-
-        XMMATRIX inverse = XMMatrixInverse(nullptr, matrixToInverse);
-
-        XMStoreFloat3x3(&tempRotate, inverse);
+        glm::mat3 inverseMat = inverse(tempRotate);
 
         for (int i = 0; i < 3; i++)
         {
             for (int j = 0; j < 3; j++)
             {
-                val.m_rows[i][j] = tempRotate.m[i][j];
+                val.m_rows[i][j] = inverseMat[i][j];
             }
         }
 

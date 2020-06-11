@@ -1,5 +1,7 @@
 #include "FMath/Quaternion.h"
 
+#include <cmath>
+
 using namespace std;
 
 namespace Farlor
@@ -101,7 +103,7 @@ namespace Farlor
     // Local Math Operations
     float Quaternion::Magnitude()
     {
-        return sqrt(s*s + u.x*u.x + u.y*u.y + u.z*u.z);
+        return std::sqrt(s*s + u.x*u.x + u.y*u.y + u.z*u.z);
     }
 
     float Quaternion::SqrMagnitude()

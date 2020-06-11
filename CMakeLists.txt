@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.11 FATAL_ERROR)
 project(FMath VERSION 1.0)
 
+find_package( glm REQUIRED )
+
 set (Sources
     GeometryCalculator.cpp
     Ray.cpp
@@ -38,6 +40,9 @@ target_include_directories(FMath
     $<INSTALL_INTERFACE:include>
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
 )
+
+target_link_libraries(FMath
+    PRIVATE glm)
 
 # Set targets to have d at end for debug build
 set_target_properties(FMath PROPERTIES DEBUG_POSTFIX "d")

@@ -1,5 +1,7 @@
 #include "FMath/Vector4.h"
 
+#include <cmath>
+
 #include <assert.h>
 
 namespace std

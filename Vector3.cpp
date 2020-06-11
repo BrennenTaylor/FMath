@@ -1,5 +1,7 @@
 #include "FMath/Vector3.h"
 
+#include <cmath>
+
 namespace std
 {
     template<> struct hash<Farlor::Vector3>

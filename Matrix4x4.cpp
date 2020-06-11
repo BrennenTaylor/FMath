@@ -1,9 +1,10 @@
 #include "FMath/Matrix4x4.h"
 
-#include <DirectXMath.h>
+#include <glm/mat4x4.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/ext/matrix_transform.hpp>
 
-using namespace DirectX;
-using namespace std;
+#include <cmath>
 
 namespace Farlor
 {
@@ -193,9 +194,9 @@ namespace Farlor
     }
 
     // Out Streaming
-    ostream& operator<<(ostream& os, const Matrix4x4& mat)
+    std::ostream& operator<<(std::ostream& os, const Matrix4x4& mat)
     {
-        os << mat.m_rows[0] << mat.m_rows[1] << mat.m_rows[2] << mat.m_rows[3] << endl;
+        os << mat.m_rows[0] << mat.m_rows[1] << mat.m_rows[2] << mat.m_rows[3] << std::endl;
         return os;
     }
 
@@ -203,26 +204,21 @@ namespace Farlor
     {
         Matrix4x4 val(*this);
 
-        XMFLOAT4X4 tempRotate;
+        glm::mat4 tempRotate;
         for (int i = 0; i < 4; i++)
         {
             for (int j = 0; j < 4; j++)
             {
-                tempRotate.m[i][j] = val.m_rows[i][j];
+                tempRotate[i][j] = val.m_rows[i][j];
             }
         }
 
-        XMMATRIX matrixToInverse = XMLoadFloat4x4(&tempRotate);
-
-        XMMATRIX inverse = XMMatrixInverse(nullptr, matrixToInverse);
-
-        XMStoreFloat4x4(&tempRotate, inverse);
-
+        glm::mat4 inverseMat = inverse(tempRotate);
         for (int i = 0; i < 4; i++)
         {
             for (int j = 0; j < 4; j++)
             {
-                val.m_rows[i][j] = tempRotate.m[i][j];
+                val.m_rows[i][j] = inverseMat[i][j];
             }
         }
 
@@ -267,7 +263,7 @@ namespace Farlor
 
         val = val.Inversed();
 
-        cout << "Inversed: " << val << endl;
+        std::cout << "Inversed: " << val << std::endl;
 
         val = val.Transposed();
 
@@ -278,23 +274,16 @@ namespace Farlor
     {
         Matrix4x4 val(*this);
 
-        XMFLOAT4X4 tempRotate;
+        glm::mat4 tempRotate;
         for (int i = 0; i < 4; i++)
         {
             for (int j = 0; j < 4; j++)
             {
-                tempRotate.m[i][j] = val.m_rows[i][j];
+                tempRotate[i][j] = val.m_rows[i][j];
             }
         }
 
-        XMMATRIX matrixToDeterminant = XMLoadFloat4x4(&tempRotate);
-
-        XMVECTOR determinant = XMMatrixDeterminant(matrixToDeterminant);
-
-        XMFLOAT4 tempVector;
-        XMStoreFloat4(&tempVector, determinant);
-
-        return tempVector.x;
+        return glm::determinant(tempRotate);
     }
 
     Matrix4x4 Matrix4x4::TranslationMatrix(const Vector3& translation)
@@ -360,25 +349,18 @@ namespace Farlor
 
     Matrix4x4 Matrix4x4::LookAtLH(const Vector3& pos, const Vector3& target, const Vector3& worldUp)
     {
-        XMFLOAT4 posFloat(pos.x, pos.y, pos.z, 0.0f);
-        XMFLOAT4 targetFloat(target.x, target.y, target.z, 0.0f);
-        XMFLOAT4 worldUpFloat(worldUp.x, worldUp.y, worldUp.z, 0.0f);
+        glm::vec3 posFloat(pos.x, pos.y, pos.z);
+        glm::vec3 targetFloat(target.x, target.y, target.z);
+        glm::vec3 worldUpFloat(worldUp.x, worldUp.y, worldUp.z);
 
-        XMVECTOR posVec = XMLoadFloat4(&posFloat);
-        XMVECTOR targetVec = XMLoadFloat4(&targetFloat);
-        XMVECTOR worldUpVec = XMLoadFloat4(&worldUpFloat);
-
-        XMMATRIX xmValue = XMMatrixLookAtLH(posVec, targetVec, worldUpVec);
-
-        XMFLOAT4X4 tempValue;
-        XMStoreFloat4x4(&tempValue, xmValue);
+        glm::mat4 tempValue = glm::lookAtLH(posFloat, targetFloat, worldUpFloat);
 
         Matrix4x4 value;
         for (int i = 0; i < 4; i++)
         {
             for (int j = 0; j < 4; j++)
             {
-                value.m_rows[i][j] = tempValue.m[i][j];
+                value.m_rows[i][j] = tempValue[i][j];
             }
         }
         // TODO: Why does this need to be Transposed?
@@ -388,18 +370,14 @@ namespace Farlor
     // Expects radians
     Matrix4x4 Matrix4x4::PerspectiveLHFOV(float fov, float aspect, float zNear, float zFar)
     {
-        // Expects radians
-        XMMATRIX xmValue = XMMatrixPerspectiveFovLH(fov, aspect, zNear, zFar);
 
-        XMFLOAT4X4 tempValue;
-        XMStoreFloat4x4(&tempValue, xmValue);
-
+        glm::mat4 tempValue = glm::perspective(fov, aspect, zNear, zFar);
         Matrix4x4 value;
         for (int i = 0; i < 4; i++)
         {
             for (int j = 0; j < 4; j++)
             {
-                value.m_rows[i][j] = tempValue.m[i][j];
+                value.m_rows[i][j] = tempValue[i][j];
             }
         }
         // TODO: Why does this need to be Transposed?
@@ -410,17 +388,13 @@ namespace Farlor
     Matrix4x4 Matrix4x4::OrthographicPerspectiveLH(float viewWidth, float viewHeight, float zNear, float zFar)
     {
         // Expects radians
-        XMMATRIX xmValue = XMMatrixOrthographicLH(viewWidth, viewHeight, zNear, zFar);
-
-        XMFLOAT4X4 tempValue;
-        XMStoreFloat4x4(&tempValue, xmValue);
-
+        glm::mat4 tempValue = glm::ortho(0.0f, viewWidth, viewHeight, 0.0f, zNear, zFar);
         Matrix4x4 value;
         for (int i = 0; i < 4; i++)
         {
             for (int j = 0; j < 4; j++)
             {
-                value.m_rows[i][j] = tempValue.m[i][j];
+                value.m_rows[i][j] = tempValue[i][j];
             }
         }
 

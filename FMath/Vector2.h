@@ -223,3 +223,14 @@ namespace Farlor
         float Dot(const Vector2& other) const;
     };
 }
+
+namespace std
+{
+    template<> struct hash<Farlor::Vector2>
+    {
+        size_t operator()(Farlor::Vector2 const& vector) const
+        {
+            return ((hash<float>()(vector.x) ^ (hash<float>()(vector.y) << 1)) >> 1);
+        }
+    };
+}

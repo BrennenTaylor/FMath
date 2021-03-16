@@ -2,19 +2,6 @@
 
 #include <cmath>
 
-namespace std
-{
-    template<> struct hash<Farlor::Vector3>
-    {
-        size_t operator()(const Farlor::Vector3& vector) const {
-            size_t const h1(std::hash<float>{}(vector.x));
-            size_t const h2(std::hash<float>{}(vector.y));
-            size_t const h3(std::hash<float>{}(vector.z));
-            return h1 ^ (h2 << 1) ^ (h3 << 2);
-        }
-    };
-}
-
 namespace Farlor
 {
     Vector3::Vector3()

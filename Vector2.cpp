@@ -4,18 +4,6 @@
 
 #include <assert.h>
 
-namespace std
-{
-    template<> struct hash<Farlor::Vector2>
-    {
-        size_t operator()(const Farlor::Vector2& vector) const {
-            size_t const h1(std::hash<float>{}(vector.x));
-            size_t const h2(std::hash<float>{}(vector.y));
-            return h1 ^ (h2 << 1);
-        }
-    };
-}
-
 namespace Farlor
 {
     Vector2::Vector2()

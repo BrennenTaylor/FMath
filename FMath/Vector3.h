@@ -255,3 +255,14 @@ namespace Farlor
 
     using Point = Vector3;
 }
+
+namespace std
+{
+    template<> struct hash<Farlor::Vector3>
+    {
+        size_t operator()(Farlor::Vector3 const& vector) const
+        {
+            return ((hash<float>()(vector.x) ^ (hash<float>()(vector.y) << 1)) >> 1) ^ (hash<float>()(vector.z) << 1);
+        }
+    };
+}

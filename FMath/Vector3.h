@@ -160,7 +160,16 @@ namespace Farlor
          * @param rhs
          * @return Vector3
          */
-        friend Vector3 operator*(const Vector3 lhs, const float &rhs);
+        friend Vector3 operator*(const Vector3 lhs, const float rhs);
+
+        /**
+         * @brief OVerload * operator, form float * vector3
+         *
+         * @param lhs
+         * @param rhs
+         * @return Vector3
+         */
+        friend Vector3 operator*(const float lhs, const Vector3& rhs);
 
         /**
          * @brief Overload /= operator, scalar
@@ -177,15 +186,6 @@ namespace Farlor
          * @return Vector3
          */
         friend Vector3 operator/(const Vector3 lhs, float &rhs);
-
-        /**
-         * @brief OVerload * operator, form float * vector3
-         *
-         * @param lhs
-         * @param rhs
-         * @return Vector3
-         */
-        friend Vector3 operator*(const float lhs, const Vector3& rhs);
 
         /**
          * @brief Overload streaming operator, convenience for outputing formatted vector

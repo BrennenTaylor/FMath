@@ -105,7 +105,7 @@ namespace Farlor
         return *this;
     }
 
-    Vector3 operator*(const Vector3 lhs, const float& other)
+    Vector3 operator*(const Vector3 lhs, const float other)
     {
         return Vector3(lhs.x * other, lhs.y * other, lhs.z * other);
     }

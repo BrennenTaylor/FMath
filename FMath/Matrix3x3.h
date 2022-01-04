@@ -34,17 +34,18 @@ namespace Farlor
         {
             std::array<float, 9> m_data;
             Vector3 m_rows[3];
+            struct {
+                float m_r0c0;
+                float m_r0c1;
+                float m_r0c2;
+                float m_r1c0;
+                float m_r1c1;
+                float m_r1c2;
+                float m_r2c0;
+                float m_r2c1;
+                float m_r2c2;
+            };
         };
-
-        float& m_r0c0;
-        float& m_r0c1;
-        float& m_r0c2;
-        float& m_r1c0;
-        float& m_r1c1;
-        float& m_r1c2;
-        float& m_r2c0;
-        float& m_r2c1;
-        float& m_r2c2;
 
         explicit Matrix3x3() noexcept;
         explicit Matrix3x3(Vector3 row1, Vector3 row2, Vector3 row3) noexcept;

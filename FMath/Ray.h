@@ -33,7 +33,7 @@ namespace Farlor
          * @param direction
          * @param origin
          */
-        Ray(const Vector3& direction, const Vector3& origin);
+        Ray(const Vector3& direction, const Vector3& origin) noexcept;
 
     public:
         Vector3 m_direction;

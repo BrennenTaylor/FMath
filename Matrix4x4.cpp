@@ -1,8 +1,20 @@
 #include "FMath/Matrix4x4.h"
 
+#ifdef WIN32
+#include <CodeAnalysis/Warnings.h>
+#pragma warning(push)
+#pragma warning ( disable : ALL_CODE_ANALYSIS_WARNINGS )
+#endif
+
 #include <glm/mat4x4.hpp>
 #include <glm/gtc/matrix_transform.hpp>
-//#include <glm/ext/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
+
+#ifdef WIN32
+#pragma warning(pop)
+#endif
+
+#include <gsl/gsl>
 
 #include <cmath>
 
@@ -14,7 +26,7 @@ namespace Farlor
         Vector4(0.0f, 0.0f, 1.0f, 0.0f),
         Vector4(0.0f, 0.0f, 0.0f, 1.0f));
 
-    Matrix4x4::Matrix4x4()
+    Matrix4x4::Matrix4x4() noexcept
     {
         m_rows[0] = Vector4(0.0f, 0.0f, 0.0f, 0.0f);
         m_rows[1] = Vector4(0.0f, 0.0f, 0.0f, 0.0f);
@@ -22,7 +34,7 @@ namespace Farlor
         m_rows[3] = Vector4(0.0f, 0.0f, 0.0f, 0.0f);
     }
 
-    Matrix4x4::Matrix4x4(const Vector4& row1, const Vector4& row2, const Vector4& row3, const Vector4& row4)
+    Matrix4x4::Matrix4x4(const Vector4& row1, const Vector4& row2, const Vector4& row3, const Vector4& row4) noexcept
     {
         m_rows[0] = row1;
         m_rows[1] = row2;
@@ -30,7 +42,7 @@ namespace Farlor
         m_rows[3] = row4;
     }
 
-    Matrix4x4::Matrix4x4(const Quaternion& q, const Vector3& pos)
+    Matrix4x4::Matrix4x4(const Quaternion& q, const Vector3& pos) noexcept
     {
         m_r1c1 = 1 - 2 * q.m_data[2]*q.m_data[2] - 2 * q.m_data[3]*q.m_data[3];
         m_r1c2 = 2 * q.m_data[1]*q.m_data[2] - 2 * q.m_data[0]*q.m_data[3];
@@ -53,7 +65,7 @@ namespace Farlor
     Matrix4x4::Matrix4x4(float r1c1, float r1c2, float r1c3, float r1c4,
             float r2c1, float r2c2, float r2c3, float r2c4,
             float r3c1, float r3c2, float r3c3, float r3c4,
-            float r4c1, float r4c2, float r4c3, float r4c4)
+            float r4c1, float r4c2, float r4c3, float r4c4) noexcept
     {
         m_r1c1 = r1c1;
         m_r1c2 = r1c2;
@@ -115,15 +127,15 @@ namespace Farlor
                 float val = 0.0;
                 for (uint32_t i = 0; i < 4; ++i)
                 {
-                    val += m_rows[r][i] * rhs.m_rows[i][c];
+                    val += gsl::at(m_rows, r)[i] * gsl::at(rhs.m_rows, i)[c];
                 }
-                result.m_rows[r][c] = val;
+                gsl::at(result.m_rows, r)[c] = val;
             }
         }
 
         for (uint32_t i = 0; i < 4*4; ++i)
         {
-            m_data[i] = result.m_data[i];
+            gsl::at(m_data, i) = gsl::at(result.m_data, i);
         }
 
         return *this;
@@ -204,12 +216,12 @@ namespace Farlor
     {
         Matrix4x4 val(*this);
 
-        glm::mat4 tempRotate;
+        glm::mat4 tempRotate = glm::identity<glm::mat4>();
         for (int i = 0; i < 4; i++)
         {
             for (int j = 0; j < 4; j++)
             {
-                tempRotate[i][j] = val.m_rows[i][j];
+                tempRotate[i][j] = gsl::at(val.m_rows, i)[j];
             }
         }
 
@@ -218,14 +230,14 @@ namespace Farlor
         {
             for (int j = 0; j < 4; j++)
             {
-                val.m_rows[i][j] = inverseMat[i][j];
+                gsl::at(val.m_rows, i)[j] = inverseMat[i][j];
             }
         }
 
         return val;
     }
 
-    Matrix4x4 Matrix4x4::Transposed() const
+    Matrix4x4 Matrix4x4::Transposed() const noexcept
     {
         Matrix4x4 val(*this);
 
@@ -274,19 +286,19 @@ namespace Farlor
     {
         Matrix4x4 val(*this);
 
-        glm::mat4 tempRotate;
+        glm::mat4 tempRotate = glm::identity<glm::mat4>();
         for (int i = 0; i < 4; i++)
         {
             for (int j = 0; j < 4; j++)
             {
-                tempRotate[i][j] = val.m_rows[i][j];
+                tempRotate[i][j] = gsl::at(val.m_rows, i)[j];
             }
         }
 
         return glm::determinant(tempRotate);
     }
 
-    Matrix4x4 Matrix4x4::TranslationMatrix(const Vector3& translation)
+    Matrix4x4 Matrix4x4::TranslationMatrix(const Vector3& translation) noexcept
     {
         Matrix4x4 result;
         result.m_rows[0] = Vector4(1.0f, 0.0f, 0.0f, translation.x);
@@ -296,7 +308,7 @@ namespace Farlor
         return result;
     }
 
-    Matrix4x4 Matrix4x4::RotationMatrix(const Quaternion& rotation)
+    Matrix4x4 Matrix4x4::RotationMatrix(const Quaternion& rotation) noexcept
     {
         Matrix4x4 result(rotation, Vector3(0.0f, 0.0f, 0.0f));
         return result;
@@ -304,30 +316,30 @@ namespace Farlor
 
     Matrix4x4 Matrix4x4::RotationYawPitchRollMatrix(const Vector3& yawPitchRoll)
     {
-        float yawCos = std::cos(yawPitchRoll.x);
-        float yawSin = std::sin(yawPitchRoll.x);
+        const float yawCos = std::cos(yawPitchRoll.x);
+        const float yawSin = std::sin(yawPitchRoll.x);
 
-        float pitchCos = std::cos(yawPitchRoll.y);
-        float pitchSin = std::sin(yawPitchRoll.y);
+        const float pitchCos = std::cos(yawPitchRoll.y);
+        const float pitchSin = std::sin(yawPitchRoll.y);
 
-        float rollCos = std::cos(yawPitchRoll.z);
-        float rollSin = std::sin(yawPitchRoll.z);
+        const float rollCos = std::cos(yawPitchRoll.z);
+        const float rollSin = std::sin(yawPitchRoll.z);
 
-        Matrix4x4 yawMatrix(
+        const Matrix4x4 yawMatrix(
             Vector4(yawCos, -yawSin, 0.0f, 0.0f),
             Vector4(yawSin, yawCos, 0.0f, 0.0f),
             Vector4(0.0f, 0.0f, 1.0f, 0.0f),
             Vector4(0.0f, 0.0f, 0.0f, 1.0f)
         );
 
-        Matrix4x4 pitchMatrix(
+        const Matrix4x4 pitchMatrix(
             Vector4(pitchCos, 0.0f, pitchSin, 0.0f),
             Vector4(0.0f, 1.0f, 0.0f, 0.0f),
             Vector4(-pitchSin, 0.0f, pitchCos, 0.0f),
             Vector4(0.0f, 0.0f, 0.0f, 1.0f)
         );
 
-        Matrix4x4 rollMatrix(
+        const Matrix4x4 rollMatrix(
             Vector4(1.0f, 0.0f, 0.0f, 0.0f),
             Vector4(0.0f, rollCos, -rollSin, 0.0f),
             Vector4(0.0f, rollSin, rollCos, 0.0f),
@@ -337,7 +349,7 @@ namespace Farlor
         return rollMatrix * pitchMatrix * yawMatrix;
     }
 
-    Matrix4x4 Matrix4x4::ScaleMatrix(const Vector3& scale)
+    Matrix4x4 Matrix4x4::ScaleMatrix(const Vector3& scale) noexcept
     {
         Matrix4x4 result;
         result.m_rows[0] = Vector4(scale.x, 0.0f, 0.0f, 0.0f);
@@ -349,18 +361,18 @@ namespace Farlor
 
     Matrix4x4 Matrix4x4::LookAtLH(const Vector3& pos, const Vector3& target, const Vector3& worldUp)
     {
-        glm::vec3 posFloat(pos.x, pos.y, pos.z);
-        glm::vec3 targetFloat(target.x, target.y, target.z);
-        glm::vec3 worldUpFloat(worldUp.x, worldUp.y, worldUp.z);
+        const glm::vec3 posFloat(pos.x, pos.y, pos.z);
+        const glm::vec3 targetFloat(target.x, target.y, target.z);
+        const glm::vec3 worldUpFloat(worldUp.x, worldUp.y, worldUp.z);
 
-        glm::mat4 tempValue = glm::lookAtLH(posFloat, targetFloat, worldUpFloat);
+        const glm::mat4 tempValue = glm::lookAtLH(posFloat, targetFloat, worldUpFloat);
 
         Matrix4x4 value;
         for (int i = 0; i < 4; i++)
         {
             for (int j = 0; j < 4; j++)
             {
-                value.m_rows[i][j] = tempValue[i][j];
+                gsl::at(value.m_rows, i)[j] = tempValue[i][j];
             }
         }
         // TODO: Why does this need to be Transposed?
@@ -377,7 +389,7 @@ namespace Farlor
         {
             for (int j = 0; j < 4; j++)
             {
-                value.m_rows[i][j] = tempValue[i][j];
+                gsl::at(value.m_rows, i)[j] = tempValue[i][j];
             }
         }
         // TODO: Why does this need to be Transposed?
@@ -394,7 +406,7 @@ namespace Farlor
         {
             for (int j = 0; j < 4; j++)
             {
-                value.m_rows[i][j] = tempValue[i][j];
+                gsl::at(value.m_rows, i)[j] = tempValue[i][j];
             }
         }
 

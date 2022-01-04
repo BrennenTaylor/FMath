@@ -1,31 +1,33 @@
 #include "FMath/Vector3.h"
 
+#include <gsl/gsl>
+
 #include <cmath>
 
 namespace Farlor
 {
-    Vector3::Vector3()
+    Vector3::Vector3() noexcept
         : x {0}
         , y {0}
         , z {0}
     {
     }
 
-    Vector3::Vector3(float value)
+    Vector3::Vector3(float value) noexcept
         : x {value}
         , y {value}
         , z {value}
     {
     }
 
-    Vector3::Vector3( float xNew,  float yNew,  float zNew)
+    Vector3::Vector3( float xNew,  float yNew,  float zNew) noexcept
         : x {xNew}
         , y {yNew}
         , z {zNew}
     {
     }
 
-    Vector3& Vector3::operator+=(const Vector3 &rhs)
+    Vector3& Vector3::operator+=(const Vector3 &rhs) noexcept
     {
         x += rhs.x;
         y += rhs.y;
@@ -33,12 +35,12 @@ namespace Farlor
         return *this;
     }
 
-     Vector3 Vector3::operator+(const Vector3 &other) const
+     Vector3 Vector3::operator+(const Vector3 &other) const noexcept
     {
         return Vector3(*this) += other;
     }
 
-    Vector3& Vector3::operator-=(const Vector3 &rhs)
+    Vector3& Vector3::operator-=(const Vector3 &rhs) noexcept
     {
         x -= rhs.x;
         y -= rhs.y;
@@ -46,12 +48,12 @@ namespace Farlor
         return *this;
     }
 
-     Vector3 Vector3::operator-(const Vector3 &other) const
+     Vector3 Vector3::operator-(const Vector3 &other) const noexcept
     {
         return Vector3(*this) -= other;
     }
 
-    Vector3& Vector3::operator*=(const Vector3 &rhs)
+    Vector3& Vector3::operator*=(const Vector3 &rhs) noexcept
     {
         x *= rhs.x;
         y *= rhs.y;
@@ -59,12 +61,12 @@ namespace Farlor
         return *this;
     }
 
-     Vector3 Vector3::operator*(const Vector3 &other) const
+     Vector3 Vector3::operator*(const Vector3 &other) const noexcept
     {
         return Vector3(*this) *= other;
     }
 
-    Vector3& Vector3::operator/=(const Vector3 &rhs)
+    Vector3& Vector3::operator/=(const Vector3 &rhs) noexcept
     {
         x /= rhs.x;
         y /= rhs.y;
@@ -72,32 +74,27 @@ namespace Farlor
         return *this;
     }
 
-    Vector3 Vector3::operator/(const Vector3 &other) const
+    Vector3 Vector3::operator/(const Vector3 &other) const noexcept
     {
         return Vector3(*this) /= other;
     }
 
-    float Vector3::operator%(const Vector3 &other) const
-    {
-        return Vector3(*this).Dot(other);
-    }
-
-    bool Vector3::operator==(const Vector3 &other) const
+    bool Vector3::operator==(const Vector3 &other) const noexcept
     {
         return (x == other.x && y == other.y && z == other.z);
     }
 
-    bool Vector3::operator!=(const Vector3 &other) const
+    bool Vector3::operator!=(const Vector3 &other) const noexcept
     {
         return !(*this == other);
     }
 
-    float& Vector3::operator[] (const int index)
+    float& Vector3::operator[] (const int index) noexcept
     {
-        return m_data[index];
+        return gsl::at(m_data, index);
     }
 
-    Vector3& Vector3::operator*=(const float& rhs)
+    Vector3& Vector3::operator*=(const float rhs) noexcept
     {
         x *= rhs;
         y *= rhs;
@@ -105,12 +102,12 @@ namespace Farlor
         return *this;
     }
 
-    Vector3 operator*(const Vector3 lhs, const float other)
+    Vector3 operator*(const Vector3& lhs, const float other) noexcept
     {
         return Vector3(lhs.x * other, lhs.y * other, lhs.z * other);
     }
 
-    Vector3& Vector3::operator/=( float &rhs)
+    Vector3& Vector3::operator/=(const float rhs) noexcept
     {
         x /= rhs;
         y /= rhs;
@@ -118,12 +115,12 @@ namespace Farlor
         return *this;
     }
 
-    Vector3 operator/(const Vector3 lhs, float &other)
+    Vector3 operator/(const Vector3& lhs, float other) noexcept
     {
         return Vector3(lhs.x / other, lhs.y / other, lhs.z / other);
     }
 
-    Vector3 operator*(const float lhs, const Vector3& rhs)
+    Vector3 operator*(const float lhs, const Vector3& rhs) noexcept
     {
         return Vector3(lhs * rhs.x, lhs * rhs.y, lhs * rhs.z);
     }
@@ -134,28 +131,28 @@ namespace Farlor
         return os;
     }
 
-    float Vector3::Magnitude() const
+    float Vector3::Magnitude() const noexcept
     {
         return std::sqrt(x * x + y * y + z * z);
     }
 
-    float Vector3::SqrMagnitude() const
+    float Vector3::SqrMagnitude() const noexcept
     {
         return x*x + y*y + z*z;
     }
 
-    Vector3 Vector3::Normalized() const
+    Vector3 Vector3::Normalized() const noexcept
     {
-        float mag = Magnitude();
+        const float mag = Magnitude();
         if (mag == 0.0f)
             return Vector3(0.0f, 0.0f, 0.0f);
 
         return Vector3 {x / mag, y / mag, z / mag};
     }
 
-    void Vector3::Normalize()
+    void Vector3::Normalize() noexcept
     {
-        float mag = Magnitude();
+        const float mag = Magnitude();
 
         if (mag == 0.0f)
         {
@@ -170,12 +167,12 @@ namespace Farlor
         z /= mag;
     }
 
-    float Vector3::Dot(const Vector3& other) const
+    float Vector3::Dot(const Vector3& other) const noexcept
     {
         return x * other.x + y * other.y + z * other.z;
     }
 
-    Vector3 Vector3::Cross(const Vector3& other) const
+    Vector3 Vector3::Cross(const Vector3& other) const noexcept
     {
         return Vector3(
             y * other.z - z * other.y,
@@ -183,7 +180,7 @@ namespace Farlor
             x * other.y - y * other.x);
     }
 
-    void Vector3::AddScaledVector(const Vector3& other, const float scaler)
+    void Vector3::AddScaledVector(const Vector3& other, const float scaler) noexcept
     {
         x += other.x * scaler;
         y += other.y * scaler;
@@ -191,7 +188,7 @@ namespace Farlor
     }
 
     // For RHS. Flip oer
-    void MakeOrthonormalBasisRHS(Vector3& a, Vector3& b, Vector3& c)
+    void Vector3::MakeOrthonormalBasisRHS(Vector3& a, Vector3& b, Vector3& c) noexcept
     {
         a.Normalize();
         c = a.Cross(b);

@@ -45,14 +45,14 @@ namespace Farlor
          * @brief Construct a new Matrix 2x2 object, defaults to identity matrix
          *
          */
-        explicit Matrix2x2();
+        explicit Matrix2x2() noexcept;
         /**
          * @brief Construct a new Matrix 2x2 object, defaults to specified values
          *
          * @param row0
          * @param row1
          */
-        explicit Matrix2x2(Vector2 row0, Vector2 row1);
+        explicit Matrix2x2(Vector2 row0, Vector2 row1) noexcept;
 
 
         /**
@@ -61,42 +61,42 @@ namespace Farlor
          * @param rhs
          * @return Matrix2x2&
          */
-        Matrix2x2& operator+=(const Matrix2x2 &rhs);
+        Matrix2x2& operator+=(const Matrix2x2 &rhs) noexcept;
         /**
          * @brief Overloads + operator to add element wise
          *
          * @param vec
          * @return Matrix2x2
          */
-        Matrix2x2 operator+( const Matrix2x2 &vec) const;
+        Matrix2x2 operator+( const Matrix2x2 &vec) const noexcept;
         /**
          * @brief Overload -= operator to subtract element wise
          *
          * @param rhs
          * @return Matrix2x2&
          */
-        Matrix2x2& operator-=(const Matrix2x2 &rhs);
+        Matrix2x2& operator-=(const Matrix2x2 &rhs) noexcept;
         /**
          * @brief Overload - operator to subtract element wise
          *
          * @param vec
          * @return Matrix2x2
          */
-        Matrix2x2 operator-( const Matrix2x2 &vec) const;
+        Matrix2x2 operator-( const Matrix2x2 &vec) const noexcept;
         /**
          * @brief Overload *= to perform 2x2 matrix multiplcation
          *
          * @param rhs
          * @return Matrix2x2&
          */
-        Matrix2x2& operator*=(const Matrix2x2 &rhs);
+        Matrix2x2& operator*=(const Matrix2x2 &rhs) noexcept;
         /**
          * @brief Overload * operator to perform matrix multiplcation
          *
          * @param vec
          * @return Matrix2x2
          */
-        Matrix2x2 operator*(const Matrix2x2 &vec) const;
+        Matrix2x2 operator*(const Matrix2x2 &vec) const noexcept;
 
         /**
          * @brief Overloads == to perform element wise
@@ -105,7 +105,7 @@ namespace Farlor
          * @return true
          * @return false
          */
-        bool operator==(const Matrix2x2 &other) const;
+        bool operator==(const Matrix2x2 &other) const noexcept;
         /**
          * @brief Overloads != to perform element wise
          *
@@ -113,7 +113,7 @@ namespace Farlor
          * @return true
          * @return false
          */
-        bool operator!=(const Matrix2x2 &other) const;
+        bool operator!=(const Matrix2x2 &other) const noexcept;
 
         /**
          * @brief Overload *= operator to multiply element wise by scalar
@@ -121,14 +121,14 @@ namespace Farlor
          * @param rhs
          * @return Matrix2x2&
          */
-        Matrix2x2& operator*=( float &rhs);
+        Matrix2x2& operator*=( float &rhs) noexcept;
         /**
          * @brief Overload * operator to multiply element wise by scalar
          *
          * @param rhs
          * @return Matrix2x2
          */
-        Matrix2x2 operator*(float &rhs) const;
+        Matrix2x2 operator*(float &rhs) const noexcept;
 
         /**
          * @brief Overload * operator to multiply be vector2
@@ -136,7 +136,7 @@ namespace Farlor
          * @param rhs
          * @return Vector2
          */
-        Vector2 operator*(const Vector2 &rhs) const;
+        Vector2 operator*(const Vector2 &rhs) const noexcept;
 
         /**
          * @brief Overload /= operator to divide element wise by scalar
@@ -144,14 +144,14 @@ namespace Farlor
          * @param rhs
          * @return Matrix2x2&
          */
-        Matrix2x2& operator/=( float &rhs);
+        Matrix2x2& operator/=( float &rhs) noexcept;
         /**
          * @brief Overload / operator to divide element wise by scalar
          *
          * @param rhs
          * @return Matrix2x2
          */
-        Matrix2x2 operator/( float &rhs) const;
+        Matrix2x2 operator/( float &rhs) const noexcept;
 
         /**
          * @brief Overload * operator to allow float * Matrix2x2 multiplication
@@ -160,7 +160,7 @@ namespace Farlor
          * @param rhs
          * @return Matrix2x2
          */
-        friend Matrix2x2 operator*(float lhs, const Matrix2x2& rhs);
+        friend Matrix2x2 operator*(float lhs, const Matrix2x2& rhs) noexcept;
 
         /**
          * @brief Overload streaming operator for pretty printing a matrix2x2
@@ -176,13 +176,13 @@ namespace Farlor
          *
          * @return Matrix2x2
          */
-        Matrix2x2 Transposed() const;
+        Matrix2x2 Transposed() const noexcept;
         /**
          * @brief Return an inversed version of the matrix
          *
          * @return Matrix2x2
          */
-        Matrix2x2 Inversed() const;
+        Matrix2x2 Inversed() const noexcept;
 
     public:
         /**

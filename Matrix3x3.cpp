@@ -1,62 +1,99 @@
 #include "FMath/Matrix3x3.h"
 
+#ifdef WIN32
+#include <CodeAnalysis/Warnings.h>
+#pragma warning(push)
+#pragma warning ( disable : ALL_CODE_ANALYSIS_WARNINGS )
+#endif
+
 #include <glm/mat3x3.hpp>
+#include <glm/gtc/type_ptr.hpp>
+
+#ifdef WIN32
+#pragma warning(pop)
+#endif
+
+#include <gsl/gsl>
 
 namespace Farlor
 {
     Matrix3x3 Matrix3x3::s_Identity = Matrix3x3(Vector3(1.0f, 0.0f, 0.0f), Vector3(0.0f, 1.0f, 0.0f), Vector3(0.0f, 0.0f, 1.0f));
 
-    Matrix3x3::Matrix3x3()
+    Matrix3x3::Matrix3x3() noexcept
+        : m_data({0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f})
+        , m_r0c0(gsl::at(m_data, 0))
+        , m_r0c1(gsl::at(m_data, 1))
+        , m_r0c2(gsl::at(m_data, 2))
+        , m_r1c0(gsl::at(m_data, 3))
+        , m_r1c1(gsl::at(m_data, 4))
+        , m_r1c2(gsl::at(m_data, 5))
+        , m_r2c0(gsl::at(m_data, 6))
+        , m_r2c1(gsl::at(m_data, 7))
+        , m_r2c2(gsl::at(m_data, 8))
     {
-        m_rows[0] = Vector3(0.0f, 0.0f, 0.0f);
-        m_rows[1] = Vector3(0.0f, 0.0f, 0.0f);
-        m_rows[2] = Vector3(0.0f, 0.0f, 0.0f);
     }
 
-    Matrix3x3::Matrix3x3(Vector3 row1, Vector3 row2, Vector3 row3)
+    Matrix3x3::Matrix3x3(Vector3 row0, Vector3 row1, Vector3 row2) noexcept
+        : m_data({row0.x, row0.y, row0.z, row1.x, row1.y, row1.z, row2.x, row2.y, row2.z})
+        , m_r0c0(gsl::at(m_data, 0))
+        , m_r0c1(gsl::at(m_data, 1))
+        , m_r0c2(gsl::at(m_data, 2))
+        , m_r1c0(gsl::at(m_data, 3))
+        , m_r1c1(gsl::at(m_data, 4))
+        , m_r1c2(gsl::at(m_data, 5))
+        , m_r2c0(gsl::at(m_data, 6))
+        , m_r2c1(gsl::at(m_data, 7))
+        , m_r2c2(gsl::at(m_data, 8))
     {
-        m_rows[0] = row1;
-        m_rows[1] = row2;
-        m_rows[2] = row3;
     }
 
-    Matrix3x3::Matrix3x3(Quaternion q)
+    Matrix3x3::Matrix3x3(Quaternion q) noexcept
+        : m_r0c0(gsl::at(m_data, 0))
+        , m_r0c1(gsl::at(m_data, 1))
+        , m_r0c2(gsl::at(m_data, 2))
+        , m_r1c0(gsl::at(m_data, 3))
+        , m_r1c1(gsl::at(m_data, 4))
+        , m_r1c2(gsl::at(m_data, 5))
+        , m_r2c0(gsl::at(m_data, 6))
+        , m_r2c1(gsl::at(m_data, 7))
+        , m_r2c2(gsl::at(m_data, 8))
     {
-        m_r1c1 = 1 - 2*q.m_data[2]*q.m_data[2] - 2*q.m_data[3]*q.m_data[3];
-        m_r1c2 = 2*q.m_data[1]*q.m_data[2] - 2*q.m_data[0] *q.m_data[3];
-        m_r1c3 = 2*q.m_data[1]*q.m_data[3] + 2*q.m_data[0] *q.m_data[2];
+        m_r0c0 = 1 - 2 * q.m_data[2]*q.m_data[2] - 2*q.m_data[3]*q.m_data[3];
+        m_r0c1 = 2 * q.m_data[1]*q.m_data[2] - 2*q.m_data[0] *q.m_data[3];
+        m_r0c2 = 2 * q.m_data[1]*q.m_data[3] + 2*q.m_data[0] *q.m_data[2];
 
-        m_r2c1 = 2*q.m_data[1]*q.m_data[2] + 2*q.m_data[0] *q.m_data[3];
-        m_r2c2 = 1 - 2*q.m_data[1]*q.m_data[1] - 2*q.m_data[3]*q.m_data[3];
-        m_r2c3 = 2*q.m_data[2]*q.m_data[3] - 2*q.m_data[0] *q.m_data[1];
+        m_r1c0 = 2 * q.m_data[1]*q.m_data[2] + 2*q.m_data[0] *q.m_data[3];
+        m_r1c1 = 1 - 2*q.m_data[1]*q.m_data[1] - 2*q.m_data[3]*q.m_data[3];
+        m_r1c2 = 2 * q.m_data[2]*q.m_data[3] - 2*q.m_data[0] *q.m_data[1];
 
-        m_r3c1 = 2*q.m_data[1]*q.m_data[3] - 2*q.m_data[0] *q.m_data[2];
-        m_r3c2 = 2*q.m_data[2]*q.m_data[3] + 2*q.m_data[0] *q.m_data[1];
-        m_r3c3 = 1 - 2*q.m_data[1]*q.m_data[1] - 2*q.m_data[2]*q.m_data[2];
+        m_r2c0 = 2 * q.m_data[1]*q.m_data[3] - 2*q.m_data[0] *q.m_data[2];
+        m_r2c1 = 2 * q.m_data[2]*q.m_data[3] + 2*q.m_data[0] *q.m_data[1];
+        m_r2c2 = 1 - 2*q.m_data[1]*q.m_data[1] - 2*q.m_data[2]*q.m_data[2];
     }
 
     // Matrix3x3 & Matrix3x3
     // Add
-    Matrix3x3& Matrix3x3::operator+=(const Matrix3x3 &rhs)
+    Matrix3x3& Matrix3x3::operator+=(const Matrix3x3 &rhs) noexcept
     {
         m_rows[0] += rhs.m_rows[0];
         m_rows[1] += rhs.m_rows[1];
         m_rows[2] += rhs.m_rows[2];
         return *this;
     }
-    Matrix3x3 Matrix3x3::operator+(const Matrix3x3 &other) const
+    Matrix3x3 Matrix3x3::operator+(const Matrix3x3 &other) const noexcept
     {
         return Matrix3x3(*this) += other;
     }
     // Subtract
-    Matrix3x3& Matrix3x3::operator-=(const Matrix3x3 &rhs)
+    Matrix3x3& Matrix3x3::operator-=(const Matrix3x3 &rhs) noexcept
     {
-        m_rows[0] -= rhs.m_rows[0];
-        m_rows[1] -= rhs.m_rows[1];
-        m_rows[2] -= rhs.m_rows[2];
+        for (size_t elemIdx = 0; elemIdx < m_data.size(); elemIdx++)
+        {
+            gsl::at(m_data, elemIdx) /= gsl::at(rhs.m_data, elemIdx);
+        }
         return *this;
     }
-    Matrix3x3 Matrix3x3::operator-(const Matrix3x3 &other) const
+    Matrix3x3 Matrix3x3::operator-(const Matrix3x3 &other) const noexcept
     {
         return Matrix3x3(*this) -= other;
     }
@@ -64,72 +101,61 @@ namespace Farlor
     // r1c1 r1c2 r1c3
     // r2c1 r2c2 r2c3
     // r3c1 r3c2 r3c3
-    Matrix3x3& Matrix3x3::Matrix3x3::operator*=(const Matrix3x3 &rhs)
+    Matrix3x3& Matrix3x3::Matrix3x3::operator*=(const Matrix3x3 &rhs) noexcept
     {
-        Vector3 newRow0;
-        Vector3 newRow1;
-        Vector3 newRow2;
+        m_r0c0 = m_r0c0 * rhs.m_r0c0 + m_r0c1 * rhs.m_r1c0 + m_r0c2 * rhs.m_r2c0;
+        m_r0c1 = m_r0c0 * rhs.m_r0c1 + m_r0c1 * rhs.m_r1c1 + m_r0c2 * rhs.m_r2c1;
+        m_r0c2 = m_r0c0 * rhs.m_r0c2 + m_r0c1 * rhs.m_r1c2 + m_r0c2 * rhs.m_r2c2;
 
-        newRow0.x = m_r1c1 * rhs.m_r1c1 + m_r1c2 * rhs.m_r2c1 + m_r1c3 * rhs.m_r3c1;
-        newRow0.y = m_r1c1 * rhs.m_r1c2 + m_r1c2 * rhs.m_r2c2 + m_r1c3 * rhs.m_r3c2;
-        newRow0.z = m_r1c1 * rhs.m_r1c3 + m_r1c2 * rhs.m_r2c3 + m_r1c3 * rhs.m_r3c3;
-
-        newRow1.x = m_r2c1 * rhs.m_r1c1 + m_r2c2 * rhs.m_r2c1 + m_r2c3 * rhs.m_r3c1;
-        newRow1.y = m_r2c1 * rhs.m_r1c2 + m_r2c2 * rhs.m_r2c2 + m_r2c3 * rhs.m_r3c2;
-        newRow1.z = m_r2c1 * rhs.m_r1c3 + m_r2c2 * rhs.m_r2c3 + m_r2c3 * rhs.m_r3c3;
-
-        newRow2.x = m_r3c1 * rhs.m_r1c1 + m_r3c2 * rhs.m_r2c1 + m_r3c3 * rhs.m_r3c1;
-        newRow2.y = m_r3c1 * rhs.m_r1c2 + m_r3c2 * rhs.m_r2c2 + m_r3c3 * rhs.m_r3c2;
-        newRow2.z = m_r3c1 * rhs.m_r1c3 + m_r3c2 * rhs.m_r2c3 + m_r3c3 * rhs.m_r3c3;
-
-        m_rows[0] = newRow0;
-        m_rows[1] = newRow1;
-        m_rows[2] = newRow2;
-
-        return *this;
+        m_rows[1] = Vector3(
+            m_r1c0 * rhs.m_r0c0 + m_r1c1 * rhs.m_r1c0 + m_r1c2 * rhs.m_r2c0,
+            m_r1c0 * rhs.m_r0c1 + m_r1c1 * rhs.m_r1c1 + m_r1c2 * rhs.m_r2c1,
+            m_r1c0 * rhs.m_r0c2 + m_r1c1 * rhs.m_r1c2 + m_r1c2 * rhs.m_r2c2
+        );
+        m_rows[2] = Vector3(
+            m_r2c0 * rhs.m_r0c0 + m_r2c1 * rhs.m_r1c0 + m_r2c2 * rhs.m_r2c0,
+            m_r2c0 * rhs.m_r0c1 + m_r2c1 * rhs.m_r1c1 + m_r2c2 * rhs.m_r2c1,
+            m_r2c0 * rhs.m_r0c2 + m_r2c1 * rhs.m_r1c2 + m_r2c2 * rhs.m_r2c2
+        );
+        return (*this);
     }
-    Matrix3x3 Matrix3x3::operator*(const Matrix3x3 &other) const
+    Matrix3x3 Matrix3x3::operator*(const Matrix3x3 &other) const noexcept
     {
         return Matrix3x3(*this) *= other;
     }
 
-    // // Divide
-    // Matrix3x3& Matrix3x3::operator/=( Matrix3x3 &rhs)
-    // {
-    //
-    // }
-    //  Matrix3x3 operator/( Matrix3x3 &vec)
-    //  {
-    //
-    //  }
-    // Use % as dot product
-    // Matrix3x3& Matrix3x3::operator%=( Matrix3x3 &rhs) = delete;
-    // float operator%( Matrix3x3 &vec);
     // Equality
-    bool Matrix3x3::operator==(const Matrix3x3 &other) const
+    bool Matrix3x3::operator==(const Matrix3x3 &other) const noexcept
     {
-        return (m_rows[0] == other.m_rows[0]) && (m_rows[1] == other.m_rows[1]) && (m_rows[2] == other.m_rows[2]);
+        bool equal = true;
+        for (size_t idx = 0; idx < m_data.size(); idx++)
+        {
+            equal = equal & (gsl::at(m_data, idx) == gsl::at(other.m_data, idx));
+        }
+        return equal;
     }
-    bool Matrix3x3::operator!=(const Matrix3x3 &other) const
+
+    bool Matrix3x3::operator!=(const Matrix3x3 &other) const noexcept
     {
         return !(*this == other);
     }
 
     // Vector & T
     // Multiply
-    Matrix3x3& Matrix3x3::operator*=( float &rhs)
+    Matrix3x3& Matrix3x3::operator*=( float &rhs) noexcept
     {
-        m_rows[0] *= rhs;
-        m_rows[1] *= rhs;
-        m_rows[2] *= rhs;
+        for (auto& element : m_data)
+        {
+            element *= rhs;
+        }
         return (*this);
     }
-    Matrix3x3 Matrix3x3::operator*( float &rhs) const
+    Matrix3x3 Matrix3x3::operator*( float &rhs) const noexcept
     {
         return Matrix3x3(*this) *= rhs;
     }
 
-    Vector3 Matrix3x3::operator*(const Vector3 &rhs) const
+    Vector3 Matrix3x3::operator*(const Vector3 &rhs) const noexcept
     {
         Vector3 val;
         val.x = m_rows[0].Dot(rhs);
@@ -139,20 +165,21 @@ namespace Farlor
     }
 
     // Divide
-    Matrix3x3& Matrix3x3::operator/=( float &rhs)
+    Matrix3x3& Matrix3x3::operator/=( float &rhs) noexcept
     {
-        m_rows[0] /= rhs;
-        m_rows[1] /= rhs;
-        m_rows[2] /= rhs;
+        for (auto& element : m_data)
+        {
+            element /= rhs;
+        }
         return (*this);
     }
-    Matrix3x3 Matrix3x3::operator/( float &rhs) const
+    Matrix3x3 Matrix3x3::operator/( float &rhs) const noexcept
     {
         return Matrix3x3(*this) /= rhs;
     }
 
     // Standalone
-    Matrix3x3 operator*(float lhs, const Matrix3x3& rhs)
+    Matrix3x3 operator*(float lhs, const Matrix3x3& rhs) noexcept
     {
         return Matrix3x3(lhs * rhs.m_rows[0], lhs * rhs.m_rows[1], lhs * rhs.m_rows[2]);
     }
@@ -168,45 +195,38 @@ namespace Farlor
     {
         Matrix3x3 val(*this);
 
-        glm::mat3 tempRotate;
-        for (int i = 0; i < 3; i++)
-        {
-            for (int j = 0; j < 3; j++)
-            {
-                tempRotate[i][j] = val.m_rows[i][j];
-            }
-        }
+        glm::mat3 tempMatrix = {
+            val.m_r0c0, val.m_r0c1, val.m_r0c2,
+            val.m_r1c0, val.m_r1c1, val.m_r1c2,
+            val.m_r2c0, val.m_r2c1, val.m_r2c2,
+        };
+        // Flip as we are row major and glm is column major
+        tempMatrix = glm::transpose(tempMatrix);
+        tempMatrix = glm::inverse(tempMatrix);
+        // Flip back
+        tempMatrix = glm::transpose(tempMatrix);
 
-        glm::mat3 inverseMat = inverse(tempRotate);
+        val.m_r0c0 = tempMatrix[0].x;
+        val.m_r0c1 = tempMatrix[0].y;
+        val.m_r0c2 = tempMatrix[0].z;
 
-        for (int i = 0; i < 3; i++)
-        {
-            for (int j = 0; j < 3; j++)
-            {
-                val.m_rows[i][j] = inverseMat[i][j];
-            }
-        }
+        val.m_r1c0 = tempMatrix[1].x;
+        val.m_r1c1 = tempMatrix[1].y;
+        val.m_r1c2 = tempMatrix[1].z;
+
+        val.m_r2c0 = tempMatrix[2].x;
+        val.m_r2c1 = tempMatrix[2].y;
+        val.m_r2c2 = tempMatrix[2].z;
 
         return val;
     }
 
-    Matrix3x3 Matrix3x3::Transposed() const
+    Matrix3x3 Matrix3x3::Transposed() const noexcept
     {
         Matrix3x3 val(*this);
-
-        float temp;
-        temp = val.m_r1c2;
-        val.m_r1c2 = val.m_r2c1;
-        val.m_r2c1 = temp;
-
-        temp = val.m_r1c3;
-        val.m_r1c3 = val.m_r3c1;
-        val.m_r3c1 = temp;
-
-        temp = val.m_r2c3;
-        val.m_r2c3 = val.m_r3c2;
-        val.m_r3c2 = temp;
-
+        std::swap(val.m_r0c1, val.m_r1c0);
+        std::swap(val.m_r0c2, val.m_r2c0);
+        std::swap(val.m_r1c2, val.m_r2c1);
         return val;
     }
 
@@ -214,8 +234,8 @@ namespace Farlor
     {
         Quaternion result;
 
-        float r;
-        float t = mat.m_rows[0][0] + mat.m_rows[1][1] + mat.m_rows[2][2];
+        float r = 0.0;
+        const float t = mat.m_r0c0 + mat.m_r1c1 + mat.m_r2c2;
 
         if (t >= 0.0f)
         {

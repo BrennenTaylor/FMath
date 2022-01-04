@@ -36,7 +36,7 @@ namespace Farlor
          * @param point Point to check inside triangle
          * @return Vector3
          */
-        Vector3 Barycentric(Vector3 v0, Vector3 v1, Vector3 v2, Vector3 point);
+        Vector3 Barycentric(Vector3 v0, Vector3 v1, Vector3 v2, Vector3 point) noexcept;
 
         /**
          * @brief Checks if a point is within
@@ -48,7 +48,7 @@ namespace Farlor
          * @param point Point to check inside triangle
          * @return bool
          */
-        bool PointInTriangle(Vector3 v0, Vector3 v1, Vector3 v2, Point point);
+        bool PointInTriangle(Vector3 v0, Vector3 v1, Vector3 v2, Vector3 point) noexcept;
 
         /**
          * @brief Creates a plane from a triangle from three
@@ -59,7 +59,7 @@ namespace Farlor
          * @param v2 Third vertex in triangle
          * @return Plane
          */
-        Plane GeneratePlaneCCW(Vector3 v0, Vector3 v1, Vector3 v2);
+        Plane GeneratePlaneCCW(Vector3 v0, Vector3 v1, Vector3 v2) noexcept;
 
         /**
          * @brief Checks if a quad specified by four vertices is
@@ -71,6 +71,6 @@ namespace Farlor
          * @param v3 Fourth vertex in triangle
          * @return bool
          */
-        bool IsQuadConvex(Vector3 v0, Vector3 v1, Vector3 v2, Vector3 v3);
+        bool IsQuadConvex(Vector3 v0, Vector3 v1, Vector3 v2, Vector3 v3) noexcept;
     };
 }

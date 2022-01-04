@@ -49,13 +49,13 @@ namespace Farlor
          * @brief Construct a new Vector 4 object, defaults all values to 0
          *
          */
-        explicit Vector4();
+        explicit Vector4() noexcept;
         /**
          * @brief Construct a new Vector 4 object, sets all elements to value
          *
          * @param value
          */
-        explicit Vector4(float value);
+        explicit Vector4(float value) noexcept;
         /**
          * @brief Construct a new Vector 4 object, set x, y, z, w to the specified values
          *
@@ -64,7 +64,7 @@ namespace Farlor
          * @param zNew
          * @param wNew
          */
-        explicit Vector4(float xNew, float yNew, float zNew, float wNew);
+        explicit Vector4(float xNew, float yNew, float zNew, float wNew) noexcept;
 
         /**
          * @brief Overloaded += operator, element wise
@@ -72,56 +72,56 @@ namespace Farlor
          * @param rhs
          * @return Vector4&
          */
-        Vector4& operator+=(const Vector4 &rhs);
+        Vector4& operator+=(const Vector4 &rhs) noexcept;
         /**
          * @brief Overloaded + operator, element wise
          *
          * @param vec
          * @return Vector4
          */
-        Vector4 operator+(const Vector4 &vec) const;
+        Vector4 operator+(const Vector4 &vec) const noexcept;
         /**
          * @brief Overloaded -= operator, element wise
          *
          * @param rhs
          * @return Vector4&
          */
-        Vector4& operator-=(const Vector4 &rhs);
+        Vector4& operator-=(const Vector4 &rhs) noexcept;
         /**
          * @brief Overloaded - operator, element wise
          *
          * @param vec
          * @return Vector4
          */
-        Vector4 operator-(const Vector4 &vec) const;
+        Vector4 operator-(const Vector4 &vec) const noexcept;
         /**
          * @brief Overloaded *= operator, element wise
          *
          * @param rhs
          * @return Vector4&
          */
-        Vector4& operator*=(const Vector4 &rhs);
+        Vector4& operator*=(const Vector4 &rhs) noexcept;
         /**
          * @brief Overloaded * operator, element wise
          *
          * @param vec
          * @return Vector4
          */
-        Vector4 operator*(const Vector4 &vec) const;
+        Vector4 operator*(const Vector4 &vec) const noexcept;
         /**
          * @brief Overloaded /= operator, element wise
          *
          * @param rhs
          * @return Vector4&
          */
-        Vector4& operator/=(const Vector4 &rhs);
+        Vector4& operator/=(const Vector4 &rhs) noexcept;
         /**
          * @brief Overloaded / operator, element wise
          *
          * @param vec
          * @return Vector4
          */
-        Vector4 operator/(const Vector4 &vec) const;
+        Vector4 operator/(const Vector4 &vec) const noexcept;
         /**
          * @brief Overloaded %= operator for dot product
          *
@@ -135,7 +135,7 @@ namespace Farlor
          * @param vec
          * @return float
          */
-        float operator%(const Vector4 &vec) const;
+        float operator%(const Vector4 &vec) const = delete;
         /**
          * @brief Overload == operator, element wise
          *
@@ -143,7 +143,7 @@ namespace Farlor
          * @return true
          * @return false
          */
-        bool operator==(const Vector4 &other) const;
+        bool operator==(const Vector4 &other) const noexcept;
         /**
          * @brief Overloade != operator, element wise
          *
@@ -151,7 +151,7 @@ namespace Farlor
          * @return true
          * @return false
          */
-        bool operator!=(const Vector4 &other) const;
+        bool operator!=(const Vector4 &other) const noexcept;
 
         /**
          * @brief Overload [] operator
@@ -159,7 +159,7 @@ namespace Farlor
          * @param index
          * @return float&
          */
-        float& operator[] (const int index);
+        float& operator[] (const int index) noexcept;
         /**
          * @brief Overload [] operator
          *
@@ -174,28 +174,28 @@ namespace Farlor
          * @param rhs
          * @return Vector4&
          */
-        Vector4& operator*=(const float &rhs);
+        Vector4& operator*=(const float &rhs) noexcept;
         /**
          * @brief Overload * operator for element wise multiplcation with scalar
          *
          * @param rhs
          * @return Vector4
          */
-        Vector4 operator*(const float &rhs) const;
+        Vector4 operator*(const float &rhs) const noexcept;
         /**
          * @brief Overload /= operator for element wise division with scalar
          *
          * @param rhs
          * @return Vector4&
          */
-        Vector4& operator/=(const float &rhs);
+        Vector4& operator/=(const float &rhs) noexcept;
         /**
          * @brief Overload / operator for element wise division with scalar
          *
          * @param rhs
          * @return Vector4
          */
-        Vector4 operator/(const float &rhs) const;
+        Vector4 operator/(const float &rhs) const noexcept;
 
         /**
          * @brief overload * operator for scalar * vector order
@@ -204,7 +204,7 @@ namespace Farlor
          * @param rhs
          * @return Vector4
          */
-        friend Vector4 operator*(float lhs, const Vector4& rhs);
+        friend Vector4 operator*(float lhs, const Vector4& rhs) noexcept;
 
         /**
          * @brief Overload stream operator for pretty printing a vector 4d.
@@ -219,31 +219,31 @@ namespace Farlor
          *
          * @return float
          */
-        float Magnitude() const;
+        float Magnitude() const noexcept;
         /**
          * @brief Calculate square magnitude of a vector, allows for avoiding sqrt calculation
          *
          * @return float
          */
-        float SqrMagnitude() const;
+        float SqrMagnitude() const noexcept;
         /**
          * @brief Returns normalized version of the vector
          *
          * @return Vector4
          */
-        Vector4 Normalized() const;
+        Vector4 Normalized() const noexcept;
         /**
          * @brief Normalize the current vector
          *
          */
-        void Normalize();
+        void Normalize() noexcept;
         /**
          * @brief Calculate dot product with another vector
          *
          * @param other
          * @return float
          */
-        float Dot(const Vector4& other) const;
+        float Dot(const Vector4& other) const noexcept;
     };
 }
 
@@ -251,7 +251,8 @@ namespace std
 {
     template<> struct hash<Farlor::Vector4>
     {
-        size_t operator()(const Farlor::Vector4& vector) const {
+        size_t operator()(const Farlor::Vector4& vector) const noexcept
+        {
             size_t const h1(std::hash<float>{}(vector.x));
             size_t const h2(std::hash<float>{}(vector.y));
             size_t const h3(std::hash<float>{}(vector.z));

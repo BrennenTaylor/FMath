@@ -1,8 +1,21 @@
-cmake_minimum_required(VERSION 3.11 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.18 FATAL_ERROR)
+
+set (CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
 project(FMath VERSION 1.0)
 
 add_subdirectory(glm)
-# find_package( glm REQUIRED )
+
+include(FetchContent)
+
+# In this example we are picking a specific tag.
+# You can also pick a specific commit, if you need to.
+FetchContent_Declare(GSL
+    GIT_REPOSITORY "https://github.com/microsoft/GSL"
+    GIT_TAG "v3.1.0"
+)
+
+FetchContent_MakeAvailable(GSL)
 
 set (Sources
     GeometryCalculator.cpp
@@ -44,7 +57,9 @@ target_include_directories(FMath
 )
 
 target_link_libraries(FMath
-	PRIVATE glm)
+	PRIVATE glm
+    PRIVATE GSL
+)
 
 # Set targets to have d at end for debug build
 set_target_properties(FMath PROPERTIES DEBUG_POSTFIX "d")

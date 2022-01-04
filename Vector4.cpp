@@ -2,11 +2,13 @@
 
 #include <cmath>
 
+#include <gsl/gsl>
+
 #include <assert.h>
 
 namespace Farlor
 {
-    Vector4::Vector4()
+    Vector4::Vector4() noexcept
         : x {0}
         , y {0}
         , z {0}
@@ -14,7 +16,7 @@ namespace Farlor
     {
     }
 
-    Vector4::Vector4(float value)
+    Vector4::Vector4(float value) noexcept
         : x {value}
         , y {value}
         , z {value}
@@ -22,7 +24,7 @@ namespace Farlor
     {
     }
 
-    Vector4::Vector4(const float xNew, const float yNew, const float zNew, const float wNew)
+    Vector4::Vector4(const float xNew, const float yNew, const float zNew, const float wNew) noexcept
         : x {xNew}
         , y {yNew}
         , z {zNew}
@@ -30,7 +32,7 @@ namespace Farlor
     {
     }
 
-    Vector4& Vector4::operator+=(const Vector4 &rhs)
+    Vector4& Vector4::operator+=(const Vector4 &rhs) noexcept
     {
         x += rhs.x;
         y += rhs.y;
@@ -39,12 +41,12 @@ namespace Farlor
         return *this;
     }
 
-    Vector4 Vector4::operator+(const Vector4 &other) const
+    Vector4 Vector4::operator+(const Vector4 &other) const noexcept
     {
         return Vector4(*this) += other;
     }
 
-    Vector4& Vector4::operator-=(const Vector4 &rhs)
+    Vector4& Vector4::operator-=(const Vector4 &rhs) noexcept
     {
         x -= rhs.x;
         y -= rhs.y;
@@ -53,12 +55,12 @@ namespace Farlor
         return *this;
     }
 
-    Vector4 Vector4::operator-(const Vector4 &other) const
+    Vector4 Vector4::operator-(const Vector4 &other) const noexcept
     {
         return Vector4(*this) -= other;
     }
 
-    Vector4& Vector4::operator*=(const Vector4 &rhs)
+    Vector4& Vector4::operator*=(const Vector4 &rhs) noexcept
     {
         x *= rhs.x;
         y *= rhs.y;
@@ -67,12 +69,12 @@ namespace Farlor
         return *this;
     }
 
-    Vector4 Vector4::operator*(const Vector4 &other) const
+    Vector4 Vector4::operator*(const Vector4 &other) const noexcept
     {
         return Vector4(*this) *= other;
     }
 
-    Vector4& Vector4::operator/=(const Vector4 &rhs)
+    Vector4& Vector4::operator/=(const Vector4 &rhs) noexcept
     {
         x /= rhs.x;
         y /= rhs.y;
@@ -81,37 +83,32 @@ namespace Farlor
         return *this;
     }
 
-    Vector4 Vector4::operator/(const Vector4 &other) const
+    Vector4 Vector4::operator/(const Vector4 &other) const noexcept
     {
         return Vector4(*this) /= other;
     }
 
-    float Vector4::operator%(const Vector4 &other) const
-    {
-        return (*this).Dot(other);
-    }
-
-    bool Vector4::operator==(const Vector4 &other) const
+    bool Vector4::operator==(const Vector4 &other) const noexcept
     {
         return (x == other.x && y == other.y && z == other.z && w == other.w);
     }
 
-    bool Vector4::operator!=(const Vector4 &other) const
+    bool Vector4::operator!=(const Vector4 &other) const noexcept
     {
         return !(*this == other);
     }
 
-    float& Vector4::operator[] (const int index)
+    float& Vector4::operator[] (const int index) noexcept
     {
-        return m_data[index];
+        return gsl::at(m_data, index);
     }
 
     const float& Vector4::operator[] (const int index) const
     {
-        return m_data[index];
+        return gsl::at(m_data, index);
     }
 
-    Vector4& Vector4::operator*=(const float& rhs)
+    Vector4& Vector4::operator*=(const float& rhs) noexcept
     {
         x *= rhs;
         y *= rhs;
@@ -120,12 +117,12 @@ namespace Farlor
         return *this;
     }
 
-    Vector4 Vector4::operator*(const float& other) const
+    Vector4 Vector4::operator*(const float& other) const noexcept
     {
         return Vector4(*this) *= other;
     }
 
-    Vector4& Vector4::operator/=(const float &rhs)
+    Vector4& Vector4::operator/=(const float &rhs) noexcept
     {
         x /= rhs;
         y /= rhs;
@@ -134,14 +131,14 @@ namespace Farlor
         return *this;
     }
 
-    Vector4 Vector4::operator/(const float &other) const
+    Vector4 Vector4::operator/(const float &other) const noexcept
     {
         return Vector4(*this) /= other;
     }
 
-    Vector4 operator*(const float lhs, const Vector4& rhs)
+    Vector4 operator*(const float lhs, const Vector4& rhs) noexcept
     {
-        return Vector4{lhs * rhs.x, lhs * rhs.y, lhs * rhs.z, lhs * rhs.w};
+        return Vector4(lhs * rhs.x, lhs * rhs.y, lhs * rhs.z, lhs * rhs.w);
     }
 
     std::ostream& operator<<(std::ostream& os, const Vector4& vec)
@@ -150,27 +147,27 @@ namespace Farlor
         return os;
     }
 
-    float Vector4::Magnitude() const
+    float Vector4::Magnitude() const noexcept
     {
         return std::sqrt(x * x + y * y + z * z + w * w);
     }
 
-    float Vector4::SqrMagnitude() const
+    float Vector4::SqrMagnitude() const noexcept
     {
         return x*x + y*y + z*z + w*w;
     }
 
-    Vector4 Vector4::Normalized() const
+    Vector4 Vector4::Normalized() const noexcept
     {
-        float mag = Magnitude();
+        const float mag = Magnitude();
         assert(mag != 0);
 
-        return Vector4 {x / mag, y / mag, z / mag, w / mag};
+        return Vector4(x / mag, y / mag, z / mag, w / mag);
     }
 
-    void Vector4::Normalize()
+    void Vector4::Normalize() noexcept
     {
-        float mag = Magnitude();
+        const float mag = Magnitude();
         assert(mag != 0);
         x /= mag;
         y /= mag;
@@ -178,7 +175,7 @@ namespace Farlor
         w /= mag;
     }
 
-    float Vector4::Dot(const Vector4& other) const
+    float Vector4::Dot(const Vector4& other) const noexcept
     {
         return x * other.x + y * other.y + z * other.z + w * other.w;
     }

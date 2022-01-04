@@ -6,43 +6,43 @@ namespace Farlor
 {
     const Matrix2x2 Matrix2x2::s_Identity = Matrix2x2(Vector2(1.0f, 0.0f), Vector2(0.0f, 1.0f));
 
-    Matrix2x2::Matrix2x2()
+    Matrix2x2::Matrix2x2() noexcept
     {
         m_rows[0] = s_Identity.m_rows[0];
         m_rows[1] = s_Identity.m_rows[1];
     }
 
-    Matrix2x2::Matrix2x2(Vector2 row0, Vector2 row1)
+    Matrix2x2::Matrix2x2(Vector2 row0, Vector2 row1) noexcept
     {
         m_rows[0] = row0;
         m_rows[1] = row1;
     }
 
-    Matrix2x2& Matrix2x2::operator+=(const Matrix2x2 &rhs)
+    Matrix2x2& Matrix2x2::operator+=(const Matrix2x2 &rhs) noexcept
     {
         m_rows[0] += rhs.m_rows[0];
         m_rows[1] += rhs.m_rows[1];
         return *this;
     }
 
-    Matrix2x2 Matrix2x2::operator+(const Matrix2x2 &other) const
+    Matrix2x2 Matrix2x2::operator+(const Matrix2x2 &other) const noexcept
     {
         return Matrix2x2(*this) += other;
     }
 
-    Matrix2x2& Matrix2x2::operator-=(const Matrix2x2 &rhs)
+    Matrix2x2& Matrix2x2::operator-=(const Matrix2x2 &rhs) noexcept
     {
         m_rows[0] -= rhs.m_rows[0];
         m_rows[1] -= rhs.m_rows[1];
         return *this;
     }
 
-    Matrix2x2 Matrix2x2::operator-(const Matrix2x2 &other) const
+    Matrix2x2 Matrix2x2::operator-(const Matrix2x2 &other) const noexcept
     {
         return Matrix2x2(*this) -= other;
     }
 
-    Matrix2x2& Matrix2x2::Matrix2x2::operator*=(const Matrix2x2 &rhs)
+    Matrix2x2& Matrix2x2::Matrix2x2::operator*=(const Matrix2x2 &rhs) noexcept
     {
         Vector2 newRow0;
         Vector2 newRow1;
@@ -55,34 +55,34 @@ namespace Farlor
         return *this;
     }
 
-    Matrix2x2 Matrix2x2::operator*(const Matrix2x2 &other) const
+    Matrix2x2 Matrix2x2::operator*(const Matrix2x2 &other) const noexcept
     {
         return Matrix2x2(*this) *= other;
     }
 
-    bool Matrix2x2::operator==(const Matrix2x2 &other) const
+    bool Matrix2x2::operator==(const Matrix2x2 &other) const noexcept
     {
         return (m_rows[0] == other.m_rows[0]) && (m_rows[1] == other.m_rows[1]);
     }
 
-    bool Matrix2x2::operator!=(const Matrix2x2 &other) const
+    bool Matrix2x2::operator!=(const Matrix2x2 &other) const noexcept
     {
         return !(*this == other);
     }
 
-    Matrix2x2& Matrix2x2::operator*=( float &rhs)
+    Matrix2x2& Matrix2x2::operator*=( float &rhs) noexcept
     {
         m_rows[0] *= rhs;
         m_rows[1] *= rhs;
         return (*this);
     }
 
-    Matrix2x2 Matrix2x2::operator*( float &rhs) const
+    Matrix2x2 Matrix2x2::operator*( float &rhs) const noexcept
     {
         return Matrix2x2(*this) *= rhs;
     }
 
-    Vector2 Matrix2x2::operator*(const Vector2 &rhs) const
+    Vector2 Matrix2x2::operator*(const Vector2 &rhs) const noexcept
     {
         Vector2 val;
         val.x = m_rows[0].Dot(rhs);
@@ -90,19 +90,19 @@ namespace Farlor
         return val;
     }
 
-    Matrix2x2& Matrix2x2::operator/=( float &rhs)
+    Matrix2x2& Matrix2x2::operator/=( float &rhs) noexcept
     {
         m_rows[0] /= rhs;
         m_rows[1] /= rhs;
         return (*this);
     }
 
-    Matrix2x2 Matrix2x2::operator/( float &rhs) const
+    Matrix2x2 Matrix2x2::operator/( float &rhs) const noexcept
     {
         return Matrix2x2(*this) /= rhs;
     }
 
-    Matrix2x2 operator*(float lhs, const Matrix2x2& rhs)
+    Matrix2x2 operator*(float lhs, const Matrix2x2& rhs) noexcept
     {
         return Matrix2x2(lhs * rhs.m_rows[0], lhs * rhs.m_rows[1]);
     }
@@ -113,13 +113,13 @@ namespace Farlor
         return os;
     }
 
-    Matrix2x2 Matrix2x2::Inversed() const
+    Matrix2x2 Matrix2x2::Inversed() const noexcept
     {
         assert(false);
         return s_Identity;
     }
 
-    Matrix2x2 Matrix2x2::Transposed() const
+    Matrix2x2 Matrix2x2::Transposed() const noexcept
     {
         Matrix2x2 val(*this);
         float temp = 0.0f;

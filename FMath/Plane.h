@@ -30,7 +30,7 @@ namespace Farlor
          * @brief Construct a new Plane object
          *
          */
-        Plane();
+        Plane() noexcept;
         /**
          * @brief Construct a new Plane object
          *
@@ -39,7 +39,7 @@ namespace Farlor
          * @param c
          * @param d
          */
-        Plane(float a, float b, float c, float d);
+        Plane(float a, float b, float c, float d) noexcept;
 
     public:
         Vector3 m_normal;

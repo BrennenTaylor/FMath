@@ -16,7 +16,7 @@
 */
 namespace Farlor
 {
-    const float F_PI = 3.141592f;
+    constexpr float F_PI = 3.141592f;
 }
 
 // Vector Includes

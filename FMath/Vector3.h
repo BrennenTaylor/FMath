@@ -10,6 +10,7 @@
  */
 #pragma once
 
+#include <array>
 #include <iostream>
 
 namespace Farlor
@@ -21,11 +22,9 @@ namespace Farlor
     class Vector3
     {
     public:
-        union
-        {
-            float m_data[3];
-            struct
-            {
+        union {
+            std::array<float, 3> m_data;
+            struct {
                 float x;
                 float y;
                 float z;
@@ -115,14 +114,6 @@ namespace Farlor
          * @param rhs
          * @return Vector3&
          */
-        Vector3& operator%=(const Vector3 &rhs) = delete;
-        /**
-         * @brief Overload % operator for dot product
-         *
-         * @param vec
-         * @return float
-         */
-        float operator%(const Vector3 &vec) const = delete;
         /**
          * @brief Overload == operator, element wise
          *
@@ -197,14 +188,6 @@ namespace Farlor
         friend std::ostream& operator<<(std::ostream& os, const Vector3& vec);
 
         /**
-         * @brief Add a scalar to the vector, element wise
-         *
-         * @param other
-         * @param scaler
-         */
-        void AddScaledVector(const Vector3& other, const float scaler) noexcept;
-
-        /**
          * @brief Calculate magnitude of vector
          *
          * @return float
@@ -250,6 +233,8 @@ namespace Farlor
          * @param v1
          * @param v2
          */
+
+        // Is this helpful?
         static void MakeOrthonormalBasisRHS(Vector3& v0, Vector3& v1, Vector3& v2) noexcept;
     };
 }

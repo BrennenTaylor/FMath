@@ -7,23 +7,17 @@
 namespace Farlor
 {
     Vector3::Vector3() noexcept
-        : x {0}
-        , y {0}
-        , z {0}
+        : m_data({0.0f, 0.0f, 0.0f})
     {
     }
 
     Vector3::Vector3(float value) noexcept
-        : x {value}
-        , y {value}
-        , z {value}
+        : m_data({value, value, value})
     {
     }
 
-    Vector3::Vector3( float xNew,  float yNew,  float zNew) noexcept
-        : x {xNew}
-        , y {yNew}
-        , z {zNew}
+    Vector3::Vector3( float xNew, float yNew, float zNew) noexcept
+        : m_data({xNew, yNew, zNew})
     {
     }
 
@@ -180,21 +174,14 @@ namespace Farlor
             x * other.y - y * other.x);
     }
 
-    void Vector3::AddScaledVector(const Vector3& other, const float scaler) noexcept
-    {
-        x += other.x * scaler;
-        y += other.y * scaler;
-        z += other.z * scaler;
-    }
-
-    // For RHS. Flip oer
-    void Vector3::MakeOrthonormalBasisRHS(Vector3& a, Vector3& b, Vector3& c) noexcept
-    {
-        a.Normalize();
-        c = a.Cross(b);
-        if(c.SqrMagnitude() == 0.0)
-            return;
-        c.Normalize();
-        b = c.Cross(a);
-    }
+    // // For RHS. Flip oer
+    // void Vector3::MakeOrthonormalBasisRHS(Vector3& a, Vector3& b, Vector3& c) noexcept
+    // {
+    //     a.Normalize();
+    //     c = a.Cross(b);
+    //     if(c.SqrMagnitude() == 0.0)
+    //         return;
+    //     c.Normalize();
+    //     b = c.Cross(a);
+    // }
 }

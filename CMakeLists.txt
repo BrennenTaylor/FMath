@@ -17,6 +17,15 @@ FetchContent_Declare(GSL
 
 FetchContent_MakeAvailable(GSL)
 
+include(FetchContent)
+FetchContent_Declare(
+  googletest
+  URL https://github.com/google/googletest/archive/609281088cfefc76f9d0ce82e1ff6c30cc3591e5.zip
+)
+# For Windows: Prevent overriding the parent project's compiler/linker settings
+set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+FetchContent_MakeAvailable(googletest)
+
 set (Sources
     GeometryCalculator.cpp
     Ray.cpp
@@ -66,65 +75,6 @@ set_target_properties(FMath PROPERTIES DEBUG_POSTFIX "d")
 # allows to generate proper symlinks for shared libs
 set_target_properties(FMath PROPERTIES VERSION ${PROJECT_VERSION})
 
-# # Installing
-# include(GNUInstallDirs)
-
-# set(config_install_dir "lib/cmake/${PROJECT_NAME}")
-# set(include_install_dir "include")
-
-# set(generated_dir "${CMAKE_CURRENT_BINARY_DIR}/generated")
-
-# # Configuration
-# set(version_config "${generated_dir}/${PROJECT_NAME}ConfigVersion.cmake")
-# set(project_config "${generated_dir}/${PROJECT_NAME}Config.cmake")
-# set(targets_export_name "${PROJECT_NAME}Targets")
-# set(namespace "${PROJECT_NAME}::")
-
-# include(CMakePackageConfigHelpers)
-
-# write_basic_package_version_file(
-#     "${version_config}" COMPATIBILITY SameMajorVersion
-# )
-
-# configure_package_config_file(
-#     "cmake/Config.cmake.in"
-#     "${project_config}"
-#     INSTALL_DESTINATION "${config_install_dir}"
-# )
-
-# install(
-#     TARGETS FMath
-#     EXPORT "${targets_export_name}"
-#     LIBRARY DESTINATION "lib"
-#     ARCHIVE DESTINATION "lib"
-#     RUNTIME DESTINATION "bin"
-#     INCLUDES DESTINATION "${include_install_dir}"
-# )
-
-# install(
-#     DIRECTORY "FMath"
-#     DESTINATION "${include_install_dir}"
-#     FILES_MATCHING PATTERN "*.h"
-# )
-
-# # # Export headers:
-# # None for this project
-# # #   * ${CMAKE_CURRENT_BINARY_DIR}/fooer_export.h -> <prefix>/include/fooer_export.h
-# # install(
-# #     FILES
-# #         "${CMAKE_CURRENT_BINARY_DIR}/fooer_export.h"
-# #     DESTINATION "${include_install_dir}"
-# # )
-
-# install(
-#     FILES "${project_config}" "${version_config}"
-#     DESTINATION "${config_install_dir}"
-# )
-
-# install(
-#     EXPORT "${targets_export_name}"
-#     NAMESPACE "${namespace}"
-#     DESTINATION "${config_install_dir}"
-# )
-
 add_library(FMath::FMath ALIAS FMath)
+
+add_subdirectory(tests)

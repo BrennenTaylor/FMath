@@ -10,6 +10,8 @@
  */
 #pragma once
 
+#include "FMath/export.h"
+
 #include <array>
 #include <iostream>
 
@@ -19,7 +21,7 @@ namespace Farlor
      * @brief Represents a 3D vector
      *
      */
-    class Vector3
+    class FMATH_EXPORT Vector3
     {
     public:
         union {
@@ -151,7 +153,7 @@ namespace Farlor
          * @param rhs
          * @return Vector3
          */
-        friend Vector3 operator*(const Vector3& lhs, const float rhs) noexcept;
+        FMATH_EXPORT friend Vector3 operator*(const Vector3& lhs, const float rhs) noexcept;
 
         /**
          * @brief OVerload * operator, form float * vector3
@@ -160,7 +162,7 @@ namespace Farlor
          * @param rhs
          * @return Vector3
          */
-        friend Vector3 operator*(const float lhs, const Vector3& rhs) noexcept;
+        FMATH_EXPORT friend Vector3 operator*(const float lhs, const Vector3& rhs) noexcept;
 
         /**
          * @brief Overload /= operator, scalar
@@ -176,7 +178,7 @@ namespace Farlor
          * @param rhs
          * @return Vector3
          */
-        friend Vector3 operator/(const Vector3& lhs, const float rhs) noexcept;
+        FMATH_EXPORT friend Vector3 operator/(const Vector3& lhs, const float rhs) noexcept;
 
         /**
          * @brief Overload streaming operator, convenience for outputing formatted vector
@@ -185,7 +187,7 @@ namespace Farlor
          * @param vec
          * @return std::ostream&
          */
-        friend std::ostream& operator<<(std::ostream& os, const Vector3& vec);
+        FMATH_EXPORT friend std::ostream& operator<<(std::ostream& os, const Vector3& vec);
 
         /**
          * @brief Calculate magnitude of vector
@@ -243,7 +245,7 @@ namespace std
 {
     template<> struct hash<Farlor::Vector3>
     {
-        size_t operator()(Farlor::Vector3 const& vector) const noexcept
+        FMATH_EXPORT size_t operator()(Farlor::Vector3 const& vector) const noexcept
         {
             return ((hash<float>()(vector.x) ^ (hash<float>()(vector.y) << 1)) >> 1) ^ (hash<float>()(vector.z) << 1);
         }

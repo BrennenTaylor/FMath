@@ -13,10 +13,13 @@ if (DEFINED FMath_SHARED_LIBS)
     set(BUILD_SHARED_LIBS "${FMath_SHARED_LIBS}")
 endif ()
 
-# Fetch in third party requirements
-add_subdirectory(glm)
-
 include(FetchContent)
+
+FetchContent_Declare(GLM
+    GIT_REPOSITORY "https://github.com/g-truc/glm"
+)
+
+FetchContent_MakeAvailable(GLM)
 
 # In this example we are picking a specific tag.
 # You can also pick a specific commit, if you need to.

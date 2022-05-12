@@ -64,6 +64,7 @@ set_target_properties(FMath PROPERTIES
 
 target_include_directories(FMath
     PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
+    PUBLIC "${CMAKE_CURRENT_BINARY_DIR}/FMath"
     PRIVATE ${GLM_INCLUDE_DIRS}
 )
 

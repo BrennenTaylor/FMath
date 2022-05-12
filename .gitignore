@@ -5,4 +5,3 @@ doxygen_output/
 CppCheckProject*
 .vs/
 conf.py
-FMath/export.h

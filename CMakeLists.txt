@@ -64,7 +64,6 @@ set_target_properties(FMath PROPERTIES
 
 target_include_directories(FMath
     PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
-    PUBLIC "${CMAKE_CURRENT_BINARY_DIR}/FMath"
     PRIVATE ${GLM_INCLUDE_DIRS}
 )
 
@@ -80,14 +79,8 @@ set_target_properties(FMath PROPERTIES DEBUG_POSTFIX "d")
 # allows to generate proper symlinks for shared libs
 set_target_properties(FMath PROPERTIES VERSION ${PROJECT_VERSION})
 
-# Generate the export header for FMath and attach it to the target
-include(GenerateExportHeader)
-generate_export_header(FMath EXPORT_FILE_NAME FMath/export.h)
 target_compile_definitions(
     FMath PUBLIC "$<$<NOT:$<BOOL:${BUILD_SHARED_LIBS}>>:FMath_STATIC_DEFINE>")
-target_include_directories(
-    FMath PUBLIC "$<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/>"
-)
 
 enable_testing()
 add_subdirectory(tests)

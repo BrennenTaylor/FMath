@@ -2,7 +2,13 @@ PROJECT_NAME = "FMath"
 PROJECT_BRIEF = "Personal math library for 3D graphics"
 OUTPUT_LANGUAGE = "English"
 
+M_SHOW_UNDOCUMENTED = YES
 FULL_PATH_NAMES = NO
 TAB_SIZE = 4
 RECURSIVE = YES
 OUTPUT_DIRECTORY = doxygen_output
+
+EXCLUDE_PATTERNS = */cmake/*
+EXCLUDE_PATTERNS += */build/*
+EXCLUDE_PATTERNS += */.vscode/*
+EXCLUDE_PATTERNS += *.py

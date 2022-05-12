@@ -2,25 +2,56 @@
     "version": 3,
     "configurePresets": [
         {
-            "name": "MSVC",
+            "name": "MSVC19",
             "displayName": "Visual Studio 2019 - amd64",
             "description": "Using compilers for Visual Studio 16 2019 (x64 architecture)",
             "generator": "Visual Studio 16 2019",
             "binaryDir": "${sourceDir}/build/",
             "cacheVariables": {
-                "CMAKE_CXX_FLAGS": "/EHsc"
+                "CMAKE_CXX_FLAGS": "/EHsc /W4 /WX /wd4201 /permissive-"
+            }
+        },
+        {
+            "name": "MSVC22",
+            "displayName": "Visual Studio 2022 - amd64",
+            "description": "Using compilers for Visual Studio 17 2022 (x64 architecture)",
+            "generator": "Visual Studio 17 2022",
+            "binaryDir": "${sourceDir}/build/",
+            "cacheVariables": {
+                "CMAKE_CXX_FLAGS": "/EHsc /W4 /WX /wd4201 /permissive-"
+            }
+        },
+        {
+            "name": "Ninja22",
+            "displayName": "Ninja w/ Visual Studio 2022 - amd64",
+            "description": "Ninja using compilers for Visual Studio 17 2022 (x64 architecture)",
+            "generator": "Ninja Multi-Config",
+            "binaryDir": "${sourceDir}/build_ninja/",
+            "cacheVariables": {
+                "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
+                "CMAKE_CXX_FLAGS": "/EHsc /W3 /wd4201 /std:c++latest /permissive-"
             }
         }
     ],
     "buildPresets": [
         {
-            "name": "Debug",
-            "configurePreset": "MSVC",
-            "configuration": "debug"            
+            "name": "Debug19",
+            "configurePreset": "MSVC19",
+            "configuration": "debug"
         },
         {
-            "name": "Release",
-            "configurePreset": "MSVC",
+            "name": "Release19",
+            "configurePreset": "MSVC19",
+            "configuration": "release"
+        },
+        {
+            "name": "Debug22",
+            "configurePreset": "MSVC22",
+            "configuration": "debug"
+        },
+        {
+            "name": "Release22",
+            "configurePreset": "MSVC22",
             "configuration": "release"
         }
     ]

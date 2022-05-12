@@ -1,4 +1,8 @@
 build/
+build_ninja/
+__pycache__/
 doxygen_output/
 CppCheckProject*
 .vs/
+conf.py
+FMath/export.h

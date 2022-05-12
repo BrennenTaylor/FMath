@@ -246,8 +246,6 @@ TEST(Vector3, Normalize) {
     Farlor::Vector3 testVec(1.0, 2.0, 3.0);
     testVec *= 2.0f;
 
-    const float cachedMag = testVec.Magnitude();
-
     testVec.Normalize();
 
     EXPECT_NEAR(testVec.Magnitude(), 1.0, 0.0001);

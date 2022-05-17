@@ -24,12 +24,6 @@ add_custom_command(TARGET FMathTests POST_BUILD
     "${PROJECT_BINARY_DIR}/$<IF:$<CONFIG:Debug>,Debug,Release>/"
    "${CMAKE_CURRENT_BINARY_DIR}/$<IF:$<CONFIG:Debug>,Debug,Release>/" 
 )
-
-add_custom_command(TARGET FMathTests POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy_directory  
-    "${PROJECT_BINARY_DIR}/bin/$<IF:$<CONFIG:Debug>,Debug,Release>/"
-    "${CMAKE_CURRENT_BINARY_DIR}/$<IF:$<CONFIG:Debug>,Debug,Release>/"
-)
 endif()
 
 add_test(

@@ -21,14 +21,14 @@ target_link_libraries(FMathTests
 if (BUILD_SHARED_LIBS)
 add_custom_command(TARGET FMathTests POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_directory 
-    "${PROJECT_BINARY_DIR}/\$\(Configuration\)/"
-    "${CMAKE_CURRENT_BINARY_DIR}/\$\(Configuration\)/"
+    "${PROJECT_BINARY_DIR}/"
+   "${CMAKE_CURRENT_BINARY_DIR}/" 
 )
 
 add_custom_command(TARGET FMathTests POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_directory  
-    "${PROJECT_BINARY_DIR}/bin/\$\(Configuration\)/"
-    "${CMAKE_CURRENT_BINARY_DIR}/\$\(Configuration\)/"
+    "${PROJECT_BINARY_DIR}/bin/"
+    "${CMAKE_CURRENT_BINARY_DIR}/"
 )
 endif()
 

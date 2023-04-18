@@ -31,6 +31,18 @@
                 "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
                 "CMAKE_CXX_FLAGS": "/EHsc /W3 /wd4201 /std:c++latest /permissive-"
             }
+        },
+        {
+            "name": "Ninja22_Linux",
+            "displayName": "Ninja w/ Linux - amd64",
+            "description": "Ninja using compilers for Linux (x64 architecture)",
+            "generator": "Ninja Multi-Config",
+            "binaryDir": "${sourceDir}/build_ninja_linux/",
+            "cacheVariables": {
+                "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
+                "CMAKE_CXX_FLAGS": "-std=c++1z",
+                "BUILD_SHARED_LIBS": "OFF"
+            }
         }
     ],
     "buildPresets": [

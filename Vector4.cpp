@@ -1,7 +1,6 @@
 #include "FMath/Vector4.h"
 
 #include <cmath>
-
 #include <gsl/gsl>
 
 #include <assert.h>

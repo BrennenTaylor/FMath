@@ -1,8 +1,8 @@
 #include "FMath/Vector3.h"
 
+#include <cmath>
 #include <gsl/gsl>
 
-#include <cmath>
 
 namespace Farlor
 {

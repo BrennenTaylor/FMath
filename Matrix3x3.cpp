@@ -6,6 +6,7 @@
 #pragma warning(disable : ALL_CODE_ANALYSIS_WARNINGS)
 #endif
 
+#include <cmath>
 #include <glm/mat3x3.hpp>
 #include <glm/gtc/type_ptr.hpp>
 

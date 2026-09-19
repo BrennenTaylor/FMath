@@ -25,7 +25,7 @@ FetchContent_MakeAvailable(GLM)
 # You can also pick a specific commit, if you need to.
 FetchContent_Declare(GSL
     GIT_REPOSITORY "https://github.com/microsoft/GSL"
-    GIT_TAG "v3.1.0"
+    GIT_TAG "main"
 )
 
 FetchContent_MakeAvailable(GSL)
